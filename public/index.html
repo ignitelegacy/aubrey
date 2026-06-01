@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Creator Archetype Ignite Legacy</title>
+<style>
+@font-face {
+  font-family: 'EditorsNote';
+  src: url('https://assets.cdn.filesafe.space/FpfeonohfE6TmE9W6y13/media/69c944b597dabd6644345ea7.ttf') format('truetype');
+  font-weight: normal; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'TTChocolates';
+  src: url('https://assets.cdn.filesafe.space/FpfeonohfE6TmE9W6y13/media/69c9454e97dabd4b88346c22.otf') format('opentype');
+  font-weight: normal; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'UglyDave';
+  src: url('https://assets.cdn.filesafe.space/FpfeonohfE6TmE9W6y13/media/69c944c797dabd35b234600c.otf') format('opentype');
+  font-weight: normal; font-style: normal; font-display: swap;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'TTChocolates', 'Helvetica Neue', sans-serif;
+  background: #fdf9f6;
+  color: #5a4a3f;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.quiz-wrap { width: 100%; max-width: 580px; }
+
+.quiz-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  animation: fadeUp 0.7s ease both;
+}
+
+.eyebrow {
+  font-family: 'UglyDave', sans-serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #c4758a;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.quiz-title {
+  font-family: 'EditorsNote', serif;
+  font-size: clamp(36px, 7vw, 52px);
+  color: #B3688A;
+  line-height: 1.05;
+  margin-bottom: 10px;
+}
+
+.quiz-sub {
+  font-size: 15px;
+  color: #9a8880;
+  line-height: 1.6;
+  font-family: 'TTChocolates', sans-serif;
+}
+
+.progress-wrap {
+  margin-bottom: 1.75rem;
+  animation: fadeUp 0.7s ease 0.1s both;
+}
+
+.progress-track {
+  height: 2px;
+  background: rgba(179,104,138,0.15);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #B3688A;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.progress-label {
+  font-family: 'UglyDave', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #c4a8b0;
+  text-align: right;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid rgba(179,104,138,0.12);
+  border-radius: 20px;
+  padding: 2rem 1.75rem;
+  animation: fadeUp 0.5s ease both;
+}
+
+.nurture-card {
+  background: #f3ede5;
+  border: 1px solid rgba(179,104,138,0.12);
+  border-radius: 20px;
+  padding: 2.25rem 2rem;
+  text-align: center;
+  animation: fadeUp 0.5s ease both;
+}
+
+.q-num {
+  font-family: 'UglyDave', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #B3688A;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ab-badge {
+  font-family: 'UglyDave', sans-serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: rgba(179,104,138,0.1);
+  color: #B3688A;
+  border-radius: 30px;
+  padding: 3px 9px;
+}
+
+.q-text {
+  font-family: 'EditorsNote', serif;
+  font-size: clamp(20px, 3.5vw, 26px);
+  color: #B3688A;
+  line-height: 1.3;
+  margin-bottom: 1.5rem;
+}
+
+.opts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 15px;
+  background: #fdf9f6;
+  border: 1px solid rgba(179,104,138,0.15);
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-family: 'TTChocolates', sans-serif;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.opt:hover { border-color: rgba(179,104,138,0.4); background: #fff; }
+.opt.sel { border-color: #B3688A; background: #fff; }
+
+.dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(179,104,138,0.3);
+  flex-shrink: 0;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.opt.sel .dot { border-color: #B3688A; background: #B3688A; }
+
+.dot-inner {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: white;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.opt.sel .dot-inner { opacity: 1; }
+
+.opt-label { font-size: 14.5px; color: #5a4a3f; line-height: 1.5; }
+.opt-sub {
+  font-size: 12px; color: #b8a8a0; margin-top: 2px;
+  font-family: 'UglyDave', sans-serif; letter-spacing: 1px;
+}
+
+.nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.25rem;
+}
+
+.btn-back {
+  font-family: 'UglyDave', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #c4a8b0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 0;
+}
+.btn-back:hover { color: #9a8880; }
+
+.btn-next {
+  font-family: 'UglyDave', sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #fff;
+  background: #ad9565;
+  border: none;
+  border-radius: 50px;
+  padding: 13px 32px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-next:not(:disabled):hover { background: #9a8457; transform: translateY(-1px); }
+.btn-next:disabled { opacity: 0.35; cursor: default; }
+
+.nurture-stat {
+  font-family: 'EditorsNote', serif;
+  font-size: 52px;
+  color: #B3688A;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.nurture-stat-label {
+  font-size: 14px; color: #9a8880; line-height: 1.6;
+  max-width: 400px; margin: 0 auto 1.5rem;
+}
+.nurture-divider {
+  width: 40px; height: 1px;
+  background: rgba(179,104,138,0.3);
+  margin: 1.5rem auto;
+}
+.nurture-heading { font-family: 'EditorsNote', serif; font-size: 22px; color: #B3688A; margin-bottom: 0.75rem; }
+.nurture-body { font-size: 14px; color: #9a8880; line-height: 1.7; max-width: 420px; margin: 0 auto; }
+
+.email-input {
+  width: 100%; padding: 14px 16px; font-size: 15px;
+  font-family: 'TTChocolates', sans-serif;
+  border: 1px solid rgba(179,104,138,0.25); border-radius: 12px;
+  background: #fdf9f6; color: #5a4a3f; margin-top: 1rem;
+  outline: none; transition: border-color 0.2s;
+}
+.email-input:focus { border-color: #B3688A; }
+.email-input::placeholder { color: #c4b8b0; }
+.email-note {
+  font-family: 'UglyDave', sans-serif; font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; color: #c4b8b0; margin-top: 8px; text-align: center;
+}
+
+/* ===== RESULT PAGE ===== */
+.result-page {
+  animation: fadeUp 0.7s ease both;
+}
+
+/* Hero */
+.rp-hero {
+  text-align: center;
+  padding: 3rem 0 2rem;
+}
+.rp-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(179,104,138,0.08);
+  border: 1px solid rgba(179,104,138,0.2);
+  border-radius: 50px;
+  padding: 7px 18px;
+  font-family: 'UglyDave', sans-serif; font-size: 10px; letter-spacing: 3px;
+  text-transform: uppercase; color: #B3688A;
+  margin-bottom: 1.5rem; display: inline-flex;
+}
+.rp-badge span { width: 5px; height: 5px; border-radius: 50%; background: #B3688A; }
+.rp-eyebrow {
+  font-family: 'UglyDave', sans-serif; font-size: 11px; letter-spacing: 4px;
+  text-transform: uppercase; color: #c4758a; margin-bottom: 0.75rem; display: block;
+}
+.rp-archetype-name {
+  font-family: 'EditorsNote', serif;
+  font-size: clamp(48px, 10vw, 80px);
+  color: #B3688A; line-height: 0.95; margin-bottom: 1.25rem;
+}
+.rp-tagline {
+  font-size: clamp(15px, 2vw, 17px); color: #9a8880; line-height: 1.7;
+  max-width: 460px; margin: 0 auto 2rem;
+}
+
+/* Score bar */
+.rp-score {
+  max-width: 380px; margin: 0 auto 2.5rem;
+}
+.rp-score-row {
+  display: flex; justify-content: space-between;
+  font-family: 'UglyDave', sans-serif; font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; color: #c4a8b0; margin-bottom: 8px;
+}
+.rp-score-track { height: 2px; background: rgba(179,104,138,0.12); border-radius: 2px; overflow: hidden; }
+.rp-score-fill { height: 100%; background: #B3688A; border-radius: 2px; transition: width 1.2s ease; }
+
+/* CTA */
+.rp-cta { margin-bottom: 2.5rem; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.rp-btn {
+  display: inline-block; font-family: 'UglyDave', sans-serif; font-size: 13px;
+  letter-spacing: 3px; text-transform: uppercase; background: #ad9565; color: #fff;
+  padding: 17px 48px; border-radius: 50px; text-decoration: none;
+  transition: background 0.3s, transform 0.2s; border: none; cursor: pointer;
+}
+.rp-btn:hover { background: #9a8457; transform: translateY(-2px); }
+.rp-sub-note {
+  font-family: 'UglyDave', sans-serif; font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; color: #c4b8b0;
+}
+
+/* Divider */
+.rp-divider { width: 40px; height: 1px; background: rgba(179,104,138,0.3); margin: 2.5rem auto; }
+
+/* Breakdown card */
+.breakdown-card {
+  background: #fff; border: 1px solid rgba(179,104,138,0.12);
+  border-radius: 20px; padding: 1.5rem 1.75rem; margin-bottom: 1.25rem;
+}
+.breakdown-label {
+  font-family: 'UglyDave', sans-serif; font-size: 10px; letter-spacing: 3px;
+  text-transform: uppercase; color: #c4a8b0; margin-bottom: 1rem;
+}
+.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.bar-name { font-size: 12px; color: #9a8880; min-width: 110px; font-family: 'TTChocolates', sans-serif; }
+.bar-track { flex: 1; height: 3px; background: rgba(179,104,138,0.12); border-radius: 3px; }
+.bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
+.bar-pct { font-size: 11px; color: #c4b8b0; min-width: 28px; text-align: right; font-family: 'UglyDave', sans-serif; letter-spacing: 1px; }
+
+/* Next card */
+.next-card { background: #f3ede5; border-radius: 20px; padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
+.next-eyebrow {
+  font-family: 'UglyDave', sans-serif; font-size: 10px; letter-spacing: 3px;
+  text-transform: uppercase; color: #B3688A; margin-bottom: 8px;
+}
+.next-text { font-family: 'EditorsNote', serif; font-size: 20px; color: #5a4a3f; line-height: 1.45; }
+
+/* Mirror block */
+.mirror-block {
+  background: #f3ede5; border-left: 2px solid #B3688A;
+  border-radius: 0 12px 12px 0; padding: 1.5rem 1.75rem; margin: 2rem 0;
+}
+.mirror-block p { font-family: 'EditorsNote', serif; font-size: 19px; color: #5a4a3f; line-height: 1.55; }
+
+/* Traits grid */
+.traits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.75rem 0; }
+.trait-card { background: #fff; border: 1px solid rgba(179,104,138,0.12); border-radius: 16px; padding: 1.25rem; }
+.trait-eyebrow {
+  font-family: 'UglyDave', sans-serif; font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; color: #B3688A; margin-bottom: 8px;
+}
+.trait-text { font-size: 13.5px; color: #7a6a5f; line-height: 1.55; }
+
+/* Section titles */
+.rp-section-eyebrow {
+  font-family: 'UglyDave', sans-serif; font-size: 11px; letter-spacing: 4px;
+  text-transform: uppercase; color: #c4758a; margin-bottom: 10px; display: block;
+}
+.rp-section-title {
+  font-family: 'EditorsNote', serif; font-size: clamp(28px, 4.5vw, 38px);
+  color: #B3688A; line-height: 1.1; margin-bottom: 1.25rem;
+}
+.rp-body { font-size: 15px; color: #7a6a5f; line-height: 1.75; margin-bottom: 1.25rem; }
+.rp-body strong { color: #5a4a3f; font-weight: 600; }
+
+/* Truth list (dark card) */
+.dark-card {
+  background: #2e2420; border-radius: 20px; padding: 1.75rem; margin: 1.75rem 0;
+}
+.dark-card .rp-section-title { color: #f5ede6; font-size: clamp(22px, 3vw, 28px); }
+.dark-card .rp-body { color: rgba(245,237,230,0.6); }
+.dark-card .rp-body strong { color: #f5ede6; }
+.truth-list { list-style: none; margin: 0.75rem 0 0; }
+.truth-list li {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 14.5px; color: rgba(245,237,230,0.65); line-height: 1.6;
+}
+.truth-list li:last-child { border-bottom: none; }
+.truth-dot { width: 5px; height: 5px; border-radius: 50%; background: #B3688A; flex-shrink: 0; margin-top: 9px; }
+
+/* What you get */
+.what-you-get {
+  border: 1px solid rgba(179,104,138,0.15); border-radius: 20px;
+  overflow: hidden; margin: 1.5rem 0; background: #fff;
+}
+.get-item {
+  display: flex; align-items: flex-start; gap: 18px;
+  padding: 1.25rem 1.5rem; border-bottom: 1px solid rgba(179,104,138,0.08);
+}
+.get-item:last-child { border-bottom: none; }
+.get-num {
+  font-family: 'EditorsNote', serif; font-size: 28px;
+  color: rgba(179,104,138,0.25); line-height: 1; min-width: 26px; margin-top: -2px;
+}
+.get-content h4 { font-size: 15px; font-weight: 600; color: #5a4a3f; margin-bottom: 5px; font-family: 'TTChocolates', sans-serif; }
+.get-content p { font-size: 13px; color: #9a8880; line-height: 1.6; }
+
+/* Testimonials */
+.testimonials { display: flex; flex-direction: column; gap: 14px; margin: 1.75rem 0; }
+.testi {
+  background: #fff; border: 1px solid rgba(179,104,138,0.12);
+  border-radius: 16px; padding: 1.5rem;
+}
+.testi-text { font-family: 'EditorsNote', serif; font-size: 18px; color: #5a4a3f; line-height: 1.6; margin-bottom: 0.75rem; }
+.testi-author { font-family: 'UglyDave', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #c4a8b0; }
+.testi-author span { color: #B3688A; }
+
+/* Income block */
+.income-block {
+  background: #f3ede5; border: 1px solid rgba(173,149,101,0.2);
+  border-radius: 20px; padding: 2rem; margin: 1.75rem 0; text-align: center;
+}
+.income-number { font-family: 'EditorsNote', serif; font-size: 60px; color: #ad9565; line-height: 1; margin-bottom: 6px; }
+.income-label { font-family: 'UglyDave', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #9a8880; }
+
+/* Pink section wrapper */
+.pink-wrap {
+  background: linear-gradient(180deg, #fce8ee 0%, #f5d0da 60%, #fce8ee 100%);
+  border-radius: 20px; padding: 2rem; margin: 1.75rem 0;
+}
+.pink-wrap .rp-section-title { color: #B3688A; font-size: clamp(22px, 3vw, 30px); }
+.pink-wrap .rp-body { color: #7a6a5f; }
+
+/* Pricing card */
+.pricing-card {
+  background: #fff; border: 1px solid rgba(179,104,138,0.18);
+  border-radius: 24px; padding: 2rem 1.75rem; margin: 1.75rem 0; text-align: center;
+}
+.pricing-card h3 { font-family: 'EditorsNote', serif; font-size: clamp(28px, 5vw, 40px); color: #B3688A; margin-bottom: 6px; }
+.pricing-price { font-family: 'EditorsNote', serif; font-size: 72px; color: #ad9565; line-height: 1; margin: 1rem 0 4px; }
+.pricing-note { font-family: 'UglyDave', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #c4a8b0; margin-bottom: 1.5rem; }
+.check-list { display: flex; flex-direction: column; gap: 8px; margin: 1.5rem 0; text-align: left; }
+.check-item {
+  background: #fdf9f6; border: 1px solid rgba(179,104,138,0.1);
+  border-radius: 50px; padding: 11px 18px;
+  font-size: 14px; color: #5a4a3f; display: flex; gap: 10px; align-items: center;
+}
+.check-icon { color: #B3688A; font-size: 13px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 480px) {
+  body { padding: 28px 16px; }
+  .card, .nurture-card { padding: 1.5rem 1.25rem; }
+  .quiz-title { font-size: 34px; }
+  .traits-grid { grid-template-columns: 1fr; }
+  .rp-archetype-name { font-size: 52px; }
+  .pricing-price { font-size: 56px; }
+}
+</style>
+</head>
+<body>
+
+<div class="quiz-wrap" id="quiz-wrap">
+
+  <div class="quiz-header">
+    <span class="eyebrow">ignite legacy · 2 min quiz</span>
+    <h1 class="quiz-title">What's Your Creator Archetype?</h1>
+    <p class="quiz-sub">Find out exactly how you're wired to build a personal brand and what to do first</p>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-track"><div class="progress-fill" id="pf" style="width:0%"></div></div>
+    <div class="progress-label" id="pl">Question 1 of 10</div>
+  </div>
+
+  <div id="qcard"></div>
+
+  <div class="nav-row">
+    <button class="btn-back" id="bbk" onclick="prevQ()">back</button>
+    <button class="btn-next" id="bnx" onclick="nextQ()" disabled>Continue</button>
+  </div>
+
+</div>
+
+<script>
+/* ─────────────────────────────────────────────
+   QUIZ DATA   12 steps total
+   Q1-3  Hook / identity + desire          (A/B zone)
+   Q4-5  Pain + past failures
+   Q6-7  Nurture slide
+   Q8-10 Awareness + resistance
+   Q11   Email capture
+   Q12   Final desire
+───────────────────────────────────────────── */
+const steps = [
+
+  /* Q1 Hook, A/B */
+  {
+    type:'q', ab:true,
+    text:'Be honest. When you think about building a personal brand and actually getting paid for it where are you right now?',
+    opts:[
+      {l:'I post but no one\'s buying anything. I have no idea how to make the content actually convert',s:'posting but not earning',a:'V'},
+      {l:'I keep watching other girls live this life and wondering why it isn\'t me yet',s:'watching from the sidelines',a:'C'},
+      {l:'I\'ve tried things before network marketing, digital products and nothing really worked',s:'been burned before',a:'B'},
+      {l:'I know I want this but I\'m honestly a little scared to actually start',s:'ready but hesitant',a:'A'}
+    ]
+  },
+
+  /* Q2 Desire, A/B */
+  {
+    type:'q', ab:true,
+    text:'When you imagine a life where your phone is actually paying you what does that feel like?',
+    opts:[
+      {l:'Traveling whenever I want, staying somewhere beautiful, never having to check my bank account',s:'total freedom and travel',a:'V'},
+      {l:'Quitting my job and owning my time completely',s:'job freedom',a:'A'},
+      {l:'Building something I\'m genuinely proud of. A brand, an income, a legacy',s:'purpose and impact',a:'B'},
+      {l:'Being surrounded by women who get it, who push me, who celebrate with me',s:'community and belonging',a:'C'}
+    ]
+  },
+
+  /* Q3 Hook, A/B */
+  {
+    type:'q', ab:true,
+    text:'If you\'re being really honest what\'s the main thing standing between you and making money from your content right now?',
+    opts:[
+      {l:'I post but I have no real system. I just throw things up and hope something sticks',s:'no system',a:'B'},
+      {l:'I\'m scared of being judged or coming across as salesy or "one of those people"',s:'reputation fear',a:'C'},
+      {l:'I\'ve tried things before and they didn\'t work. Now I\'m not sure what to believe',s:'past attempts blocked me',a:'V'},
+      {l:'Honestly, I don\'t even know where to start',s:'total beginner',a:'A'}
+    ]
+  },
+
+  /* Q4 Pain */
+  {
+    type:'q',
+    text:'What does your content actually look like right now?',
+    opts:[
+      {l:'I post here and there lifestyle stuff, things I love. Nothing strategic',s:'casual poster',a:'V'},
+      {l:'I barely post. I scroll way more than I create',s:'mostly scrolling',a:'B'},
+      {l:'I post pretty consistently and get engagement but nobody\'s buying anything',s:'active but not earning',a:'C'},
+      {l:'I\'ve started accounts, deleted them, restarted. I can\'t seem to find my thing',s:'restart loop',a:'A'}
+    ]
+  },
+
+  /* Q5 Past failures */
+  {
+    type:'q',
+    text:'Have you ever actually tried to make money online before?',
+    opts:[
+      {l:'Yes I tried network marketing or a similar model and it didn\'t really go anywhere',s:'NM history',a:'B'},
+      {l:'Yes I tried selling digital products, UGC or coaching but couldn\'t get traction',s:'digital product history',a:'V'},
+      {l:'I\'ve thought about it a lot but never actually pulled the trigger',s:'dreamed but not done',a:'C'},
+      {l:'No this would genuinely be my first time',s:'brand new',a:'A'}
+    ]
+  },
+
+  /* NURTURE 1 (between Q5 and Q6) */
+  {
+    type:'nurture',
+    stat:'78%',
+    statLabel:'of women who successfully earn from content say the missing piece wasn\'t posting more. It was having the right offer behind their content.',
+    heading:'Here\'s what most people get wrong',
+    body:'Posting more does not equal earning more. The women you\'re watching aren\'t just "influencers." They have a specific system that turns their audience\'s trust into real income. Keep going you\'re about to find out exactly which version of that fits you.'
+  },
+
+  /* Q6 Awareness */
+  {
+    type:'q',
+    text:'What would making real money from your personal brand actually change for you?',
+    opts:[
+      {l:'I could finally leave my job and stop asking permission to live my life',s:'job exit is the goal',a:'A'},
+      {l:'I could stop stressing about money and actually enjoy the life I already have',s:'financial ease',a:'V'},
+      {l:'I could prove to myself and honestly to others that I can do this',s:'validation and proof',a:'B'},
+      {l:'I could create something that funds the freedom and adventures I want',s:'lifestyle and freedom',a:'C'}
+    ]
+  },
+
+  /* Q7 Resistance */
+  {
+    type:'q',
+    text:'When you imagine telling people you make money from your phone what comes up?',
+    opts:[
+      {l:'Honestly, I worry about what people will think. Is it real? Is it like an MLM thing?',s:'what will people think',a:'C'},
+      {l:'I\'d be so proud. I\'ve always wanted to prove I figured something out on my own',s:'achievement energy',a:'B'},
+      {l:'I don\'t care what anyone thinks. I just want the money in my account',s:'results focused',a:'A'},
+      {l:'I want it to be real and sustainable not just a phase',s:'longevity matters',a:'V'}
+    ]
+  },
+
+  /* Q8 Awareness stage */
+  {
+    type:'q',
+    text:'Which of these sounds most like something you\'d actually do?',
+    opts:[
+      {l:'Share things I genuinely love and earn real commissions through my brand and content',s:'content and brand deals',a:'V'},
+      {l:'Build an audience so loyal that income comes naturally from the trust they have in me',s:'audience-first',a:'C'},
+      {l:'Learn a clear proven system, follow it step by step, and earn from it',s:'system-based',a:'B'},
+      {l:'Do whatever gets me to a real first win as fast as possible',s:'speed first',a:'A'}
+    ]
+  },
+
+  /* NURTURE 2 (between Q8 and Q9) */
+  {
+    type:'nurture',
+    stat:'$99',
+    statLabel:'One decision. Lifetime access. You\'re almost at your result.',
+    heading:'The women doing this right now didn\'t start with a big following',
+    body:'They started with the right community, a clear path, and one decision to back themselves. Most of them had tried things that didn\'t work. The difference wasn\'t talent or timing. It was finding the right vehicle and actually going all in on it. Let\'s find out which path is yours.'
+  },
+
+  /* Q9 Resistance */
+  {
+    type:'q',
+    text:'What do the people around you think about you wanting to build a brand and earn online?',
+    opts:[
+      {l:'They\'d probably be skeptical until they saw it actually working',s:'show-me crowd',a:'C'},
+      {l:'They\'d roll their eyes until they saw the bank transfer',s:'prove it energy',a:'A'},
+      {l:'They\'d be supportive but have no idea what I\'m actually building',s:'supportive but confused',a:'V'},
+      {l:'I honestly haven\'t told anyone yet. It\'s kind of my secret thing right now',s:'private about it',a:'B'}
+    ]
+  },
+
+  /* Q10 Email capture (mid-quiz = higher opt-in) */
+  {
+    type:'email',
+    text:'Where should we send your personalized archetype result?',
+    subtext:'You\'ll get your full breakdown + a custom first-step guide based on how you\'re wired.'
+  },
+
+  /* Q11 Final desire (primes result page) */
+  {
+    type:'q',
+    text:'Last one. If you woke up 90 days from now having changed one thing what would it be?',
+    opts:[
+      {l:'I\'ve made my first real commission and I cannot stop smiling about it',s:'first win energy',a:'A'},
+      {l:'I\'ve quit my job or I\'m close and I actually have a real plan to get there',s:'freedom milestone',a:'V'},
+      {l:'I\'m part of a community of women who genuinely get it and push each other forward',s:'belonging and community',a:'C'},
+      {l:'I have a system running and income coming in without grinding every single day',s:'automated ease',a:'B'}
+    ]
+  }
+];
+
+let cur = 0;
+let answers = new Array(steps.length).fill(null);
+let emailVal = '';
+
+function qCount() { return steps.filter(s => s.type === 'q').length; }
+function qIndex(i) {
+  let c = 0;
+  for (let j = 0; j <= i; j++) { if (steps[j].type === 'q') c++; }
+  return c;
+}
+
+function render() {
+  const s = steps[cur];
+  const card = document.getElementById('qcard');
+  const pct = Math.round((cur / steps.length) * 100);
+  document.getElementById('pf').style.width = pct + '%';
+
+  if (s.type === 'q') {
+    const qi = qIndex(cur);
+    document.getElementById('pl').textContent = 'Question ' + qi + ' of ' + qCount();
+    card.innerHTML = `
+      <div class="card">
+        <p class="q-num">Question ${qi}${s.ab ? ' <span class="ab-badge">hook question</span>' : ''}</p>
+        <p class="q-text">${s.text}</p>
+        <div class="opts">
+          ${s.opts.map((o, i) => `
+            <button class="opt${answers[cur] === i ? ' sel' : ''}" onclick="sel(${i})">
+              <div class="dot"><div class="dot-inner"></div></div>
+              <div>
+                <div class="opt-label">${o.l}</div>
+                <div class="opt-sub">${o.s}</div>
+              </div>
+            </button>
+          `).join('')}
+        </div>
+      </div>`;
+    document.getElementById('bnx').disabled = answers[cur] === null;
+    document.getElementById('bnx').textContent = cur === steps.length - 1 ? 'See My Result' : 'Continue';
+
+  } else if (s.type === 'nurture') {
+    document.getElementById('pl').textContent = 'Almost there';
+    card.innerHTML = `
+      <div class="nurture-card">
+        <div class="nurture-stat">${s.stat}</div>
+        <p class="nurture-stat-label">${s.statLabel}</p>
+        <div class="nurture-divider"></div>
+        <p class="nurture-heading">${s.heading}</p>
+        <p class="nurture-body">${s.body}</p>
+      </div>`;
+    document.getElementById('bnx').disabled = false;
+    document.getElementById('bnx').textContent = 'Keep Going';
+
+  } else if (s.type === 'email') {
+    document.getElementById('pl').textContent = 'One more step';
+    card.innerHTML = `
+      <div class="card">
+        <p class="q-num">Almost done</p>
+        <p class="q-text">${s.text}</p>
+        <p style="font-size:13px;color:#c4b8b0;font-family:'TTChocolates',sans-serif;">${s.subtext}</p>
+        <input class="email-input" type="email" placeholder="your@email.com" id="emailinput" value="${emailVal}" oninput="onEmail(this.value)" />
+        <p class="email-note">no spam. just your result + first steps.</p>
+      </div>`;
+    document.getElementById('bnx').disabled = emailVal.length < 5;
+    document.getElementById('bnx').textContent = 'Get My Result →';
+  }
+
+  document.getElementById('bbk').style.visibility = cur === 0 ? 'hidden' : 'visible';
+}
+
+function sel(i) { answers[cur] = i; render(); }
+
+function onEmail(v) {
+  emailVal = v;
+  document.getElementById('bnx').disabled = v.length < 5;
+}
+
+function nextQ() {
+  if (steps[cur].type === 'q' && answers[cur] === null) return;
+  if (cur === steps.length - 1) { showResult(); return; }
+  cur++;
+  render();
+}
+
+function prevQ() { if (cur === 0) return; cur--; render(); }
+
+/* ─────────────────────────────────────────────
+   ARCHETYPES full result page data
+───────────────────────────────────────────── */
+const ARCHETYPES = {
+
+  V: {
+    name: 'The Visionary',
+    tagline: 'You dream big, feel deeply, and people are drawn to you before they even know why. The problem isn\'t your content it\'s that you\'ve never had a system that matches your energy.',
+    scoreLabel: 'Visionary match',
+    scorePct: 78,
+    shadow: 'Starts everything. Finishes nothing. Income stays inconsistent.',
+    mirrorQuote: '"You don\'t have a visibility problem. You have a monetisation gap. You\'re building an audience you just don\'t have the right offer sitting behind it yet."',
+    traits: [
+      { eyebrow: 'your strength', text: 'You have magnetic energy. When you show up fully, people feel it.' },
+      { eyebrow: 'your gap', text: 'You tend to orbit between ideas without a system to turn them into income.' },
+      { eyebrow: 'your edge', text: 'When you\'re in the right environment with the right offer, you move fast.' },
+      { eyebrow: 'your next move', text: 'You need a high-ticket pathway and a community that elevates your standard.' }
+    ],
+    whatBlocksYou: [
+      'Posting content without a clear monetisation strategy behind it',
+      'Shiny object syndrome jumping between ideas before any of them compound',
+      'Waiting until you feel "ready" instead of launching before you\'re perfect',
+      'Underselling yourself because you haven\'t been shown what you\'re worth'
+    ],
+    testimonials: [
+      { text: '"Since joining Ignite Legacy I\'ve gone from posting with zero strategy to landing brand deals and making real commissions. Lauren doesn\'t just teach content she teaches you how to think like a business."', author: 'Jess B', detail: 'Visionary · inside Ignite Legacy' },
+      { text: '"I was the girl who was always starting things and never finishing. Ignite Legacy gave me the system I was missing. First $4,900 week last month."', author: 'Mia G', detail: 'Visionary · inside Ignite Legacy' }
+    ],
+    incomeExample: '$4,900',
+    incomeLabel: 'week · real member result from inside Ignite Legacy',
+    darkTitle: 'What Ignite Legacy actually gives a Visionary',
+    darkBody: 'You don\'t need more inspiration. You need a community that holds you accountable, a clear offer that matches your energy, and a system that converts your audience into actual income. That\'s exactly what Ignite Legacy is built to do.',
+    checkItems: [
+      '8 complete courses Legacy Pathway, Mindset, Systems, Content, Cashflow, Sales',
+      'Monthly group calls with Lauren + direct feedback on your content',
+      'Lifetime community access with women who are actually doing this',
+      'Brand deal pitch templates, rate cards, contracts and invoices',
+      'Influence AI Lauren\'s custom-trained AI coach available any time',
+      'Content calendars, hook vault, Reels frameworks, story scripts'
+    ]
+  },
+
+  B: {
+    name: 'The Builder',
+    tagline: 'You\'re systematic, strategic, and once you have a proven path in front of you you execute quietly until the money moves. You just haven\'t found the path that actually works yet.',
+    scoreLabel: 'Builder match',
+    scorePct: 74,
+    shadow: 'Overthinks before launching. Waits until it\'s "ready." Income stays delayed.',
+    mirrorQuote: '"You\'re not afraid of hard work. You\'re afraid of working hard on the wrong thing again. What you need isn\'t more research it\'s a system with real proof behind it."',
+    traits: [
+      { eyebrow: 'your strength', text: 'You follow through. When you commit to a path, you do the work quietly and completely.' },
+      { eyebrow: 'your gap', text: 'You\'re prone to over-planning. You wait for certainty that never fully comes.' },
+      { eyebrow: 'your edge', text: 'You build better than anyone. Once you have the right blueprint, you run with it.' },
+      { eyebrow: 'your next move', text: 'You need a clear, proven step-by-step system with real results behind it and permission to start now.' }
+    ],
+    whatBlocksYou: [
+      'Waiting until you feel fully ready before you post or put yourself out there',
+      'Researching for months without committing to one strategy',
+      'Talking yourself out of opportunities because the plan isn\'t "complete" yet',
+      'Not seeing yourself as the type of person who earns from content yet'
+    ],
+    testimonials: [
+      { text: '"I took so many courses but I\'ve never seen this much knowledge. I wrote half a notebook from just one module. Lauren gives you a complete step-by-step path nothing is left out."', author: '@vicki.bir', detail: 'Builder · inside Ignite Legacy' },
+      { text: '"As a Builder, I needed a system I could trust. Ignite Legacy gave me that. Clear steps, real support, and a community of women who are actually in it."', author: 'Rebecca E', detail: 'Builder · inside Ignite Legacy' }
+    ],
+    incomeExample: '144k',
+    incomeLabel: 'followers gained in 3 months · real member result',
+    darkTitle: 'What Ignite Legacy actually gives a Builder',
+    darkBody: 'You don\'t need to be told to work harder. You need a clear roadmap, a community that holds you accountable to starting, and proof that the system actually works. Ignite Legacy is structured exactly the way you think.',
+    checkItems: [
+      'Step-by-step curriculum from brand foundation to full cashflow system',
+      'Content calendars, systems, and planning frameworks already built for you',
+      'Monthly calls + direct strategy support so you\'re never guessing next steps',
+      'Landing page and email templates the tech stuff, done',
+      'A community of women who are ahead of you and pulling you forward',
+      'Lifetime access return at every new stage of your business'
+    ]
+  },
+
+  C: {
+    name: 'The Connector',
+    tagline: 'You are warm, trusted, and loyal. People follow you because they genuinely like you. You just haven\'t had the right offer behind all that trust yet.',
+    scoreLabel: 'Connector match',
+    scorePct: 71,
+    shadow: 'Gives everything away for free. Undersells herself constantly. Income doesn\'t match her impact.',
+    mirrorQuote: '"You have something that can\'t be taught people trust you. The only thing missing is having something to actually sell. And the confidence to sell it."',
+    traits: [
+      { eyebrow: 'your strength', text: 'You build real relationships. Your audience doesn\'t just follow you they root for you.' },
+      { eyebrow: 'your gap', text: 'You\'re so focused on serving and connecting that selling feels uncomfortable or wrong.' },
+      { eyebrow: 'your edge', text: 'A Connector with the right offer and the right positioning becomes someone people buy from for life.' },
+      { eyebrow: 'your next move', text: 'You need a community of women doing the same thing and a system that teaches you to sell without feeling salesy.' }
+    ],
+    whatBlocksYou: [
+      'Giving your best content away for free while other women charge for less',
+      'Worrying about what people will think if you start promoting a product or offer',
+      'Saying yes to collabs and relationships but not to income-generating opportunities',
+      'Underestimating how much the trust you\'ve built is actually worth'
+    ],
+    testimonials: [
+      { text: '"I always knew creating was what I was meant to do. Ignite Legacy gave me the confidence to actually start. I landed my first brand deal in 8 days."', author: 'Rachel', detail: 'Connector · inside Ignite Legacy' },
+      { text: '"I\'m shocked at how much effort and information is here. I went from 2,230 followers to 161,000 in 3 months. Starting this was the best thing I ever did for myself."', author: 'Maria', detail: 'Connector · inside Ignite Legacy' }
+    ],
+    incomeExample: '161k',
+    incomeLabel: 'followers gained in 3 months · real member result',
+    darkTitle: 'What Ignite Legacy actually gives a Connector',
+    darkBody: 'You don\'t need a bigger audience. You need to learn how to monetise the one you already have. Ignite Legacy teaches you how to sell in a way that feels completely natural through storytelling, content, and the trust you\'ve already built.',
+    checkItems: [
+      'Storytelling and sales psychology courses that make selling feel like connection',
+      'Brand deal frameworks, negotiation templates, rate cards and contracts',
+      'Content to Cashflow turn your audience\'s trust into actual income',
+      'Private community of women who get it and cheer each other on loudly',
+      'Monthly group calls so you\'re never building alone',
+      'Caption structures, hooks, and Reels frameworks that convert'
+    ]
+  },
+
+  A: {
+    name: 'The Activator',
+    tagline: 'You move fast, feel everything, and when you\'re in you\'re all the way in. You just need the momentum of a real first win to prove to yourself that this is actually possible.',
+    scoreLabel: 'Activator match',
+    scorePct: 76,
+    shadow: 'Shiny object syndrome. Never goes deep enough to earn. Always starting, rarely finishing.',
+    mirrorQuote: '"You\'re not scattered you\'re energised. The issue is you keep switching vehicles before any of them can pay you. You need one path, one decision, and one real first win."',
+    traits: [
+      { eyebrow: 'your strength', text: 'You move fast, you\'re decisive, and when you commit, the energy is contagious.' },
+      { eyebrow: 'your gap', text: 'You collect opportunities. Courses. Business ideas. But you don\'t stay in one long enough to earn.' },
+      { eyebrow: 'your edge', text: 'One focused sprint with the right system and an Activator will outwork almost anyone.' },
+      { eyebrow: 'your next move', text: 'You need a low-barrier entry point with fast proof and a community that will not let you quit.' }
+    ],
+    whatBlocksYou: [
+      'Starting multiple things at once and never going deep enough on any of them',
+      'Getting excited by the next thing before the current thing has a chance to pay off',
+      'Needing to see results fast and giving up when they don\'t come immediately',
+      'Being in your head more than you\'re in motion'
+    ],
+    testimonials: [
+      { text: '"I was the queen of starting things and not finishing them. Ignite Legacy was the first thing that actually held my attention because it was giving me results. Made my first sale in two weeks."', author: 'Kayla', detail: 'Activator · inside Ignite Legacy' },
+      { text: '"Lauren just tells you what to do and it works. I stopped overthinking and started moving. This is the best $99 I\'ve ever spent on anything."', author: '@taylormakes', detail: 'Activator · inside Ignite Legacy' }
+    ],
+    incomeExample: '2 weeks',
+    incomeLabel: 'to first sale · real member result from inside Ignite Legacy',
+    darkTitle: 'What Ignite Legacy actually gives an Activator',
+    darkBody: 'You don\'t need another course to add to your list. You need one complete system, a community that holds you accountable, and a first real win that makes it impossible to stop. Ignite Legacy is designed to get you moving and keep you moving.',
+    checkItems: [
+      'Get started in high ticket learn the model and take action from day one',
+      'Instagram Bootcamp + Content to Cashflow so you\'re earning fast',
+      'Influence AI for on-demand strategy when you feel stuck mid-sprint',
+      'Community accountability so you don\'t let yourself quit this time',
+      'Everything you need in one place no hopping between platforms',
+      '$99 one-time, lifetime access so the momentum never has to stop'
+    ]
+  }
+};
+
+function showResult() {
+  /* tally votes */
+  const counts = { V:0, B:0, C:0, A:0 };
+  steps.forEach((s,i) => {
+    if (s.type === 'q' && answers[i] !== null) counts[s.opts[answers[i]].a]++;
+  });
+  const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]);
+  const top = sorted[0][0];
+  const total = Object.values(counts).reduce((a,b)=>a+b,0);
+  const r = ARCHETYPES[top];
+
+  const names = { V:'The Visionary', B:'The Builder', C:'The Connector', A:'The Activator' };
+  const colors = { V:'#B3688A', B:'#ad9565', C:'#9a8880', A:'#c4758a' };
+
+  /* hide header, progress, nav */
+  document.querySelector('.quiz-header').style.display = 'none';
+  document.querySelector('.progress-wrap').style.display = 'none';
+  document.querySelector('.nav-row').style.display = 'none';
+  document.getElementById('qcard').innerHTML = '';
+
+  document.getElementById('quiz-wrap').innerHTML = buildResultPage(r, counts, total, top, names, colors);
+
+  /* animate score bar after paint */
+  setTimeout(() => {
+    const fill = document.getElementById('rp-score-fill');
+    if (fill) fill.style.width = r.scorePct + '%';
+  }, 300);
+}
+
+function buildResultPage(r, counts, total, top, names, colors) {
+  const barRows = Object.entries(counts).map(([k,v]) => {
+    const pct = total > 0 ? Math.round(v/total*100) : 0;
+    return `<div class="bar-row">
+      <span class="bar-name">${names[k]}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${k===top?colors[k]:'rgba(179,104,138,0.2)'}"></div></div>
+      <span class="bar-pct">${pct}%</span>
+    </div>`;
+  }).join('');
+
+  const traitCards = r.traits.map(t => `
+    <div class="trait-card">
+      <div class="trait-eyebrow">${t.eyebrow}</div>
+      <div class="trait-text">${t.text}</div>
+    </div>`).join('');
+
+  const blockers = r.whatBlocksYou.map(b => `
+    <li><span class="truth-dot"></span><span>${b}</span></li>`).join('');
+
+  const testis = r.testimonials.map(t => `
+    <div class="testi">
+      <div class="testi-text">${t.text}</div>
+      <div class="testi-author">- <span>${t.author}</span> · ${t.detail}</div>
+    </div>`).join('');
+
+  const checkItems = r.checkItems.map(c => `
+    <div class="check-item"><span class="check-icon">✦</span>${c}</div>`).join('');
+
+  return `<div class="result-page">
+
+    <!-- Hero -->
+    <div class="rp-hero">
+      <div class="rp-badge"><span></span> your ignite legacy archetype</div>
+      <span class="rp-eyebrow">you are</span>
+      <div class="rp-archetype-name">${r.name}</div>
+      <p class="rp-tagline">${r.tagline}</p>
+
+      <div class="rp-score">
+        <div class="rp-score-row"><span>your archetype match</span><span>${r.scorePct}%</span></div>
+        <div class="rp-score-track"><div class="rp-score-fill" id="rp-score-fill" style="width:0%"></div></div>
+      </div>
+
+      <div class="rp-cta">
+        <a href="https://ignitelegacy.com" class="rp-btn">Show Me My Path Inside Ignite Legacy</a>
+        <span class="rp-sub-note">Ignite Legacy · $99 one-time · lifetime access · instant start</span>
+      </div>
+    </div>
+
+    <div class="rp-divider"></div>
+
+    <!-- Breakdown -->
+    <div class="breakdown-card">
+      <p class="breakdown-label">Your full archetype breakdown</p>
+      ${barRows}
+    </div>
+
+    <!-- Mirror -->
+    <div class="mirror-block"><p>${r.mirrorQuote}</p></div>
+
+    <!-- Traits -->
+    <span class="rp-section-eyebrow">how you\'re wired</span>
+    <p class="rp-section-title">What makes you ${r.name}</p>
+    <div class="traits-grid">${traitCards}</div>
+
+    <!-- Shadow side -->
+    <div class="next-card">
+      <p class="next-eyebrow">your shadow side (read this)</p>
+      <p class="next-text">${r.shadow}</p>
+    </div>
+
+    <div class="rp-divider"></div>
+
+    <!-- What blocks you -->
+    <div class="dark-card">
+      <p class="rp-section-eyebrow">why you\'re stuck</p>
+      <p class="rp-section-title">${r.darkTitle}</p>
+      <p class="rp-body">${r.darkBody}</p>
+      <ul class="truth-list">${blockers}</ul>
+    </div>
+
+    <!-- Income proof -->
+    <div class="income-block">
+      <div class="income-number">${r.incomeExample}</div>
+      <div class="income-label">${r.incomeLabel}</div>
+    </div>
+
+    <!-- Testimonials -->
+    <span class="rp-section-eyebrow">real results · ignite legacy members</span>
+    <p class="rp-section-title">Women just like you, doing this right now</p>
+    <div class="testimonials">${testis}</div>
+
+    <!-- More social proof -->
+    <div class="testimonials">
+      <div class="testi">
+        <div class="testi-text">"I'm in shock at how much you've given us inside Ignite Legacy. I never expected anything like it. I wrote half my notebook with only one module."</div>
+        <div class="testi-author">- <span>@vicki.bir</span> · inside Ignite Legacy</div>
+      </div>
+      <div class="testi">
+        <div class="testi-text">"I processed $13k in sales while I was in Hawaii swimming, exploring, and soaking up the sun. This business is showing me what's actually possible when you go all in."</div>
+        <div class="testi-author">- <span>Mia Gilbert</span> · inside Ignite Legacy</div>
+      </div>
+      <div class="testi">
+        <div class="testi-text">"Tony and I just did the math last week we had $47,500 in committed and closed sales. We just hit our first $10k commissions week."</div>
+        <div class="testi-author">- <span>Maggie Tilley</span> · inside Ignite Legacy</div>
+      </div>
+    </div>
+
+    <div class="rp-divider"></div>
+
+    <!-- Pink CTA section -->
+    <div class="pink-wrap">
+      <span class="rp-section-eyebrow">built for ${r.name}s</span>
+      <p class="rp-section-title">What Ignite Legacy gives you</p>
+      <p class="rp-body">Ignite Legacy is a <strong>$99 one-time investment</strong> that gives you lifetime access to 8 step-by-step courses, a private creator community, monthly group calls with Lauren, brand deal templates, the Influence AI, and direct feedback on your content and strategy.</p>
+      <p class="rp-body">This is not just a course. It is a complete ecosystem for women building personal brands that actually pay them.</p>
+
+      <div class="what-you-get">
+        <div class="get-item"><span class="get-num">1</span><div class="get-content"><h4>8 complete courses</h4><p>From the Legacy Pathway and Mindset Upgrade through Systems, Content, Cashflow, Instagram Bootcamp, Storytelling, and Sales Psychology.</p></div></div>
+        <div class="get-item"><span class="get-num">2</span><div class="get-content"><h4>Direct access to Lauren</h4><p>Monthly group calls, content feedback, and strategy support. You're never figuring your next move out alone.</p></div></div>
+        <div class="get-item"><span class="get-num">3</span><div class="get-content"><h4>Lifetime private community</h4><p>A space of women actually building this celebrating wins, asking questions, and keeping each other moving.</p></div></div>
+        <div class="get-item"><span class="get-num">4</span><div class="get-content"><h4>Every template you'll ever need</h4><p>Brand deal pitches, rate cards, contracts, caption frameworks, hook vault, content calendars, Reels structures.</p></div></div>
+        <div class="get-item"><span class="get-num">5</span><div class="get-content"><h4>Influence AI</h4><p>Lauren's custom-trained AI coach. Strategy, content direction, and clarity on demand any time you feel stuck.</p></div></div>
+        <div class="get-item"><span class="get-num">6</span><div class="get-content"><h4>Get started in high ticket</h4><p>Learn the model, understand the offer, and take your first real steps into premium sales with confidence.</p></div></div>
+      </div>
+    </div>
+
+    <!-- Pricing card -->
+    <div class="pricing-card">
+      <span class="rp-section-eyebrow">ignite legacy</span>
+      <h3>Join today. Start today.</h3>
+      <div class="pricing-price">$99</div>
+      <p class="pricing-note">one-time · lifetime access · no subscription</p>
+      <div class="check-list">${checkItems}</div>
+      <a href="https://ignitelegacy.com" class="rp-btn" style="display:block;width:100%;margin-top:1.5rem;">Yes I'm Ready. Let's Go.</a>
+      <p style="font-family:'UglyDave',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c4b8b0;margin-top:12px;">$99 one-time · instant access · no subscription</p>
+    </div>
+
+    <!-- Final testimonial -->
+    <div class="mirror-block" style="margin-top:2rem;">
+      <p>"Since Ignite Legacy, I don't have a single invoice sent out under four figures and I'm looking to hire someone to help with the demand."<br><span style="font-family:'UglyDave',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#c4758a;display:block;margin-top:12px;">- Mei · inside Ignite Legacy</span></p>
+    </div>
+
+    <div style="text-align:center;margin:2.5rem 0 1rem;">
+      <a href="https://ignitelegacy.com" class="rp-btn">I'm In. Show Me My Path.</a>
+      <p style="font-family:'UglyDave',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c4b8b0;margin-top:10px;">Ignite Legacy · $99 · lifetime access</p>
+    </div>
+
+  </div>`;
+}
+
+render();
+
+/* ── TRACKING ── */
+function track(event, data) {
+  fetch('/api/track', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ event, ...data, ts: Date.now() })
+  }).catch(() => {});
+}
+
+/* patch sel() to track question answers + quiz start */
+let quizStarted = false;
+const _sel = sel;
+sel = function(i) {
+  if (!quizStarted) { quizStarted = true; track('quiz_start', {}); }
+  track('question_answer', { step: cur, answer: i, archetype_vote: steps[cur]?.opts?.[i]?.a });
+  _sel(i);
+};
+
+/* patch nextQ() to fire email submit + GHL on email step */
+const _nextQ = nextQ;
+nextQ = function() {
+  if (steps[cur] && steps[cur].type === 'email' && emailVal.length >= 5) {
+    track('email_submit', { email: emailVal });
+    fetch('/api/ghl', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: emailVal })
+    }).catch(() => {});
+  }
+  _nextQ();
+};
+
+/* patch showResult() to fire result_view with archetype */
+let currentArchetype = null;
+const _showResult = showResult;
+showResult = function() {
+  _showResult();
+  const c = { V:0, B:0, C:0, A:0 };
+  steps.forEach((s,i) => { if (s.type === 'q' && answers[i] !== null) c[s.opts[answers[i]].a]++; });
+  currentArchetype = Object.entries(c).sort((a,b) => b[1]-a[1])[0][0];
+  track('result_view', { archetype: currentArchetype });
+};
+
+/* CTA click tracking */
+document.addEventListener('click', function(e) {
+  if (e.target.closest('a.rp-btn')) {
+    track('cta_click', { archetype: currentArchetype });
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ignite Legacy Quiz — Analytics</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Figtree:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0e0b09;
+    color: #fdf9f6;
+    font-family: 'Figtree', sans-serif;
+    font-size: 15px;
+    min-height: 100vh;
+  }
+
+  /* LOGIN */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .login-box {
+    background: #1a1410;
+    border: 1px solid #2e2420;
+    border-radius: 12px;
+    padding: 2.5rem;
+    width: 340px;
+    text-align: center;
+  }
+  .login-box h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: #fdf9f6;
+    margin-bottom: .4rem;
+  }
+  .login-box p { color: #9e8e86; font-size: 13px; margin-bottom: 1.5rem; }
+  .login-box input {
+    width: 100%;
+    background: #0e0b09;
+    border: 1px solid #2e2420;
+    border-radius: 8px;
+    padding: .75rem 1rem;
+    color: #fdf9f6;
+    font-size: 15px;
+    margin-bottom: 1rem;
+    outline: none;
+  }
+  .login-box input:focus { border-color: #B3688A; }
+  .login-box button {
+    width: 100%;
+    background: #B3688A;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: .8rem;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity .2s;
+  }
+  .login-box button:hover { opacity: .85; }
+  .login-error { color: #e87777; font-size: 13px; margin-top: .5rem; }
+
+  /* DASHBOARD */
+  #dashboard { display: none; }
+  .top-bar {
+    background: #1a1410;
+    border-bottom: 1px solid #2e2420;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .top-bar h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: #fdf9f6;
+  }
+  .top-bar span { color: #9e8e86; font-size: 13px; }
+  .refresh-btn {
+    background: none;
+    border: 1px solid #2e2420;
+    color: #9e8e86;
+    border-radius: 6px;
+    padding: .4rem .9rem;
+    font-size: 13px;
+    cursor: pointer;
+    transition: border-color .2s, color .2s;
+  }
+  .refresh-btn:hover { border-color: #B3688A; color: #fdf9f6; }
+
+  .main { padding: 2rem; max-width: 1100px; margin: 0 auto; }
+
+  /* STAT CARDS */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .stat-card {
+    background: #1a1410;
+    border: 1px solid #2e2420;
+    border-radius: 12px;
+    padding: 1.4rem 1.5rem;
+  }
+  .stat-label { color: #9e8e86; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: .4rem; }
+  .stat-value { font-size: 36px; font-weight: 600; color: #fdf9f6; line-height: 1; }
+  .stat-sub { color: #9e8e86; font-size: 12px; margin-top: .4rem; }
+  .stat-pink { color: #B3688A; }
+  .stat-gold { color: #ad9565; }
+
+  /* SECTIONS */
+  .section-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  @media (max-width: 700px) { .section-row { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: #1a1410;
+    border: 1px solid #2e2420;
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+  .panel h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: #fdf9f6;
+    margin-bottom: 1.2rem;
+  }
+
+  /* FUNNEL BAR */
+  .funnel-step { margin-bottom: 1rem; }
+  .funnel-label { display: flex; justify-content: space-between; font-size: 13px; color: #c8b8b0; margin-bottom: .35rem; }
+  .funnel-label strong { color: #fdf9f6; }
+  .bar-bg { background: #0e0b09; border-radius: 99px; height: 10px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 99px; transition: width .6s ease; }
+
+  /* ARCHETYPE BARS */
+  .arch-row { display: flex; align-items: center; gap: .75rem; margin-bottom: .8rem; }
+  .arch-name { width: 100px; font-size: 13px; color: #c8b8b0; flex-shrink: 0; }
+  .arch-bar-wrap { flex: 1; background: #0e0b09; border-radius: 99px; height: 8px; overflow: hidden; }
+  .arch-bar { height: 100%; border-radius: 99px; transition: width .6s ease; }
+  .arch-count { font-size: 13px; color: #9e8e86; width: 30px; text-align: right; flex-shrink: 0; }
+
+  /* DROPOFF TABLE */
+  .dropoff-table { width: 100%; border-collapse: collapse; }
+  .dropoff-table th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #9e8e86; padding-bottom: .6rem; }
+  .dropoff-table td { font-size: 13px; color: #c8b8b0; padding: .45rem 0; border-top: 1px solid #2e2420; }
+  .dropoff-table td:first-child { color: #fdf9f6; }
+  .dropoff-pct { font-size: 12px; color: #9e8e86; }
+  .dropoff-pct.warn { color: #e8a277; }
+
+  /* EMAILS TABLE */
+  .emails-table { width: 100%; border-collapse: collapse; }
+  .emails-table th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #9e8e86; padding-bottom: .6rem; }
+  .emails-table td { font-size: 13px; color: #c8b8b0; padding: .45rem 0; border-top: 1px solid #2e2420; }
+  .emails-table td:first-child { color: #fdf9f6; }
+  .no-data { color: #9e8e86; font-size: 13px; padding: .5rem 0; }
+
+  .loading { color: #9e8e86; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>Quiz Analytics</h1>
+    <p>Ignite Legacy — Admin</p>
+    <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')login()" />
+    <button onclick="login()">Enter</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="top-bar">
+    <h1>Quiz Analytics</h1>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <span id="last-updated"></span>
+      <button class="refresh-btn" onclick="loadData()">Refresh</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- TOP STATS -->
+    <div class="stat-grid" id="stat-grid">
+      <div class="stat-card"><div class="stat-label">Quiz Starts</div><div class="stat-value" id="s-starts">-</div></div>
+      <div class="stat-card"><div class="stat-label">Emails Captured</div><div class="stat-value stat-pink" id="s-emails">-</div><div class="stat-sub" id="s-email-rate"></div></div>
+      <div class="stat-card"><div class="stat-label">Completions</div><div class="stat-value" id="s-completions">-</div><div class="stat-sub" id="s-completion-rate"></div></div>
+      <div class="stat-card"><div class="stat-label">CTA Clicks</div><div class="stat-value stat-gold" id="s-cta">-</div><div class="stat-sub" id="s-cta-rate"></div></div>
+    </div>
+
+    <!-- FUNNEL + ARCHETYPES -->
+    <div class="section-row">
+
+      <!-- FUNNEL -->
+      <div class="panel">
+        <h2>Funnel Drop-off</h2>
+        <div id="funnel-wrap"></div>
+      </div>
+
+      <!-- ARCHETYPE RESULTS -->
+      <div class="panel">
+        <h2>Archetype Results</h2>
+        <div id="arch-wrap"></div>
+        <div style="margin-top:1.2rem; padding-top:1rem; border-top:1px solid #2e2420;">
+          <div style="font-size:12px;color:#9e8e86;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.7rem;">CTA Clicks by Archetype</div>
+          <div id="cta-arch-wrap"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DROP-OFF BY QUESTION + EMAIL LIST -->
+    <div class="section-row">
+
+      <div class="panel">
+        <h2>Drop-off by Question</h2>
+        <table class="dropoff-table">
+          <thead><tr><th>Step</th><th>Answers</th><th>Drop from prev</th></tr></thead>
+          <tbody id="dropoff-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <h2>Recent Emails</h2>
+        <table class="emails-table">
+          <thead><tr><th>Email</th><th>Time</th></tr></thead>
+          <tbody id="emails-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let adminPassword = '';
+
+function login() {
+  const pw = document.getElementById('pw-input').value;
+  if (!pw) return;
+  adminPassword = pw;
+  loadData();
+}
+
+async function loadData() {
+  try {
+    const res = await fetch('/api/admin?p=' + encodeURIComponent(adminPassword));
+    if (res.status === 401) {
+      document.getElementById('login-error').textContent = 'Wrong password.';
+      adminPassword = '';
+      return;
+    }
+    const data = await res.json();
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    render(data);
+    document.getElementById('last-updated').textContent = 'Updated ' + new Date().toLocaleTimeString();
+  } catch(e) {
+    document.getElementById('login-error').textContent = 'Connection error. Is the API running?';
+  }
+}
+
+function render(d) {
+  const { funnel, rates, archetypes, cta_by_archetype, questionAnswers, recentEmails } = d;
+
+  /* top stats */
+  document.getElementById('s-starts').textContent = funnel.starts.toLocaleString();
+  document.getElementById('s-emails').textContent = funnel.emails.toLocaleString();
+  document.getElementById('s-email-rate').textContent = rates.emailRate + '% capture rate';
+  document.getElementById('s-completions').textContent = funnel.completions.toLocaleString();
+  document.getElementById('s-completion-rate').textContent = rates.completionRate + '% of starts';
+  document.getElementById('s-cta').textContent = funnel.cta_clicks.toLocaleString();
+  document.getElementById('s-cta-rate').textContent = rates.ctaRate + '% of completions';
+
+  /* funnel bars */
+  const fSteps = [
+    { label: 'Quiz Starts', val: funnel.starts, color: '#9e8e86' },
+    { label: 'Email Submitted', val: funnel.emails, color: '#B3688A' },
+    { label: 'Completed Quiz', val: funnel.completions, color: '#ad9565' },
+    { label: 'Clicked CTA', val: funnel.cta_clicks, color: '#c4758a' },
+  ];
+  const maxF = funnel.starts || 1;
+  document.getElementById('funnel-wrap').innerHTML = fSteps.map(s => `
+    <div class="funnel-step">
+      <div class="funnel-label"><span>${s.label}</span><strong>${s.val.toLocaleString()}</strong></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:${Math.round((s.val/maxF)*100)}%;background:${s.color}"></div></div>
+    </div>
+  `).join('');
+
+  /* archetype results */
+  const archNames = { V:'The Visionary', B:'The Builder', C:'The Connector', A:'The Activator' };
+  const archColors = { V:'#B3688A', B:'#ad9565', C:'#9a8880', A:'#c4758a' };
+  const totalArch = Object.values(archetypes).reduce((a,b)=>a+b,0) || 1;
+  document.getElementById('arch-wrap').innerHTML = Object.entries(archetypes)
+    .sort((a,b)=>b[1]-a[1])
+    .map(([k,v]) => `
+      <div class="arch-row">
+        <div class="arch-name">${archNames[k]}</div>
+        <div class="arch-bar-wrap"><div class="arch-bar" style="width:${Math.round((v/totalArch)*100)}%;background:${archColors[k]}"></div></div>
+        <div class="arch-count">${v}</div>
+      </div>
+    `).join('');
+
+  /* cta by archetype */
+  const totalCta = Object.values(cta_by_archetype).reduce((a,b)=>a+b,0) || 1;
+  document.getElementById('cta-arch-wrap').innerHTML = Object.entries(cta_by_archetype)
+    .sort((a,b)=>b[1]-a[1])
+    .map(([k,v]) => `
+      <div class="arch-row">
+        <div class="arch-name" style="font-size:12px;">${archNames[k]}</div>
+        <div class="arch-bar-wrap"><div class="arch-bar" style="width:${Math.round((v/totalCta)*100)}%;background:${archColors[k]}"></div></div>
+        <div class="arch-count">${v}</div>
+      </div>
+    `).join('');
+
+  /* drop-off table */
+  const stepLabels = [
+    'Q1 Hook','Q2 Identity','Q3 Desire','Q4 Pain','Q5 Past Failures',
+    'Nurture 1','Q6 Awareness','Q7 Resistance','Q8 Path',
+    'Nurture 2','Q9 Perception','Email Capture','Q11 Final Desire'
+  ];
+  let prev = null;
+  document.getElementById('dropoff-tbody').innerHTML = questionAnswers.map((s, i) => {
+    const drop = prev !== null && prev > 0 ? Math.round(((prev - s.answers) / prev) * 100) : null;
+    const warnClass = drop !== null && drop > 25 ? 'warn' : '';
+    const dropText = drop !== null ? `<span class="dropoff-pct ${warnClass}">${drop > 0 ? '-'+drop+'%' : '—'}</span>` : '<span class="dropoff-pct">—</span>';
+    prev = s.answers;
+    return `<tr><td>${stepLabels[i] || 'Step '+i}</td><td>${s.answers}</td><td>${dropText}</td></tr>`;
+  }).join('');
+
+  /* emails */
+  if (!recentEmails.length) {
+    document.getElementById('emails-tbody').innerHTML = '<tr><td colspan="2" class="no-data">No emails yet.</td></tr>';
+  } else {
+    document.getElementById('emails-tbody').innerHTML = recentEmails.map(e => {
+      const d = e.ts ? new Date(e.ts).toLocaleDateString('en-US', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' }) : '-';
+      return `<tr><td>${e.email}</td><td>${d}</td></tr>`;
+    }).join('');
+  }
+}
+</script>
+</body>
+</html>
