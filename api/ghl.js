@@ -8,26 +8,33 @@ export default async function handler(req, res) {
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: 'no email' });
 
-  const webhookUrl = process.env.GHL_WEBHOOK_URL;
-  if (!webhookUrl) {
-    console.error('GHL_WEBHOOK_URL not set');
-    return res.status(500).json({ error: 'webhook not configured' });
+  const token = process.env.GHL_API_TOKEN;
+  const locationId = process.env.GHL_LOCATION_ID;
+
+  if (!token || !locationId) {
+    console.error('GHL_API_TOKEN or GHL_LOCATION_ID not set');
+    return res.status(500).json({ error: 'GHL not configured' });
   }
 
   try {
-    const response = await fetch(webhookUrl, {
+    const response = await fetch('https://services.leadconnectorhq.com/contacts/', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Version': '2021-07-28'
+      },
       body: JSON.stringify({
         email,
+        locationId,
         tags: ['ignite-legacy-quiz'],
-        source: 'ignite-legacy-quiz'
+        source: 'Ignite Legacy Quiz'
       })
     });
 
     if (!response.ok) {
       const text = await response.text();
-      console.error('GHL error:', text);
+      console.error('GHL error:', response.status, text);
       return res.status(502).json({ error: 'GHL rejected request' });
     }
 
