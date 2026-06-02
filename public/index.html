@@ -647,8 +647,8 @@ const steps = [
   /* NURTURE 2 (between Q8 and Q9) */
   {
     type:'nurture',
-    stat:'$99',
-    statLabel:'One decision. Lifetime access. You\'re almost at your result.',
+    stat:'',
+    statLabel:'',
     heading:'The women doing this right now didn\'t start with a big following',
     body:'They started with the right community, a clear path, and one decision to back themselves. Most of them had tried things that didn\'t work. The difference wasn\'t talent or timing. It was finding the right vehicle and actually going all in on it. Let\'s find out which path is yours.'
   },
@@ -729,8 +729,8 @@ function render() {
     document.getElementById('pl').textContent = 'Almost there';
     card.innerHTML = `
       <div class="nurture-card">
-        <div class="nurture-stat">${s.stat}</div>
-        <p class="nurture-stat-label">${s.statLabel}</p>
+        ${s.stat ? `<div class="nurture-stat">${s.stat}</div>` : ''}
+        ${s.statLabel ? `<p class="nurture-stat-label">${s.statLabel}</p>` : ''}
         <div class="nurture-divider"></div>
         <p class="nurture-heading">${s.heading}</p>
         <p class="nurture-body">${s.body}</p>
@@ -1078,7 +1078,7 @@ function buildResultPage(r, counts, total, top, names, colors) {
     <!-- Pink CTA section -->
     <div class="pink-wrap">
       <span class="rp-section-eyebrow">one decision. lifetime access.</span>
-      <p class="rp-section-title">This exact path is how Maddi started earning more without a giant following</p>
+      <p class="rp-section-title">This exact path is how content creators started earning more without a giant following</p>
       <img class="mockup-img" src="https://assets.cdn.filesafe.space/wcJWrJ0LKUsg51VQbi8P/media/69d9c6f8b30bc52371d2af66.png" alt="Ignite Legacy mockup" />
       <p class="rp-body">This exact framework that will be revealed is how Maddi went from posting casually to landing her first premium offer, building a business that fits her life, and earning more without chasing a bigger following.</p>
       <p class="rp-body">The women doing this right now didn't start with a big following. They started with the right community, a clear path, and one decision to back themselves.</p>
