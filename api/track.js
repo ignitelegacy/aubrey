@@ -9,6 +9,10 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
   const { event, step, answer, archetype_vote, archetype, email, ts } = req.body;
+  // Lightweight logging to help debug why submissions may not be appearing in Supabase
+  try {
+    console.log('TRACK EVENT:', { event, step, email, ts, answer: answer ? (answer.length > 200 ? answer.slice(0,200)+'...' : answer) : null });
+  } catch (e) { /* ignore logging failures */ }
 
   try {
     const response = await fetch(`${SUPABASE_URL}/rest/v1/quiz_events`, {
