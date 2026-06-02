@@ -303,6 +303,11 @@ body {
   font-size: clamp(15px, 2vw, 17px); color: #9a8880; line-height: 1.7;
   max-width: 460px; margin: 0 auto 2rem;
 }
+.rp-quote {
+  font-size: 16px; color: #5a4a3f; line-height: 1.75;
+  max-width: 520px; margin: 0 auto 1.75rem;
+  font-family: 'TTChocolates', sans-serif;
+}
 
 /* Score bar */
 .rp-score {
@@ -1008,11 +1013,7 @@ function buildResultPage(r, counts, total, top, names, colors) {
       <span class="rp-eyebrow">you are</span>
       <div class="rp-archetype-name">${r.name}</div>
       <p class="rp-tagline">${r.tagline}</p>
-
-      <div class="rp-score">
-        <div class="rp-score-row"><span>your archetype match</span><span>${r.scorePct}%</span></div>
-        <div class="rp-score-track"><div class="rp-score-fill" id="rp-score-fill" style="width:0%"></div></div>
-      </div>
+      <div class="rp-quote">${r.mirrorQuote}</div>
 
       <div class="rp-cta">
         <a href="https://ignitelegacy.co/checkout?ref=aubreyvlynn" class="rp-btn">Show Me My Path Inside Ignite Legacy</a>
@@ -1027,9 +1028,6 @@ function buildResultPage(r, counts, total, top, names, colors) {
       <p class="breakdown-label">Your full archetype breakdown</p>
       ${barRows}
     </div>
-
-    <!-- Mirror -->
-    <div class="mirror-block"><p>${r.mirrorQuote}</p></div>
 
     <!-- Traits -->
     <span class="rp-section-eyebrow">how you\'re wired</span>
