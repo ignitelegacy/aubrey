@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).end();
 
-  const { email } = req.body;
+  const { email, name, answers } = req.body;
   if (!email) return res.status(400).json({ error: 'no email' });
 
   const token = process.env.GHL_API_TOKEN;
@@ -16,6 +16,21 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'GHL not configured' });
   }
 
+  const payload = {
+    email,
+    locationId,
+    tags: ['ignite-legacy-quiz'],
+    source: 'Ignite Legacy Quiz'
+  };
+
+  if (name) {
+    payload.firstName = name;
+  }
+
+  if (process.env.GHL_ANSWERS_FIELD_ID && answers) {
+    payload.customFields = [{ fieldId: process.env.GHL_ANSWERS_FIELD_ID, value: JSON.stringify(answers) }];
+  }
+
   try {
     const response = await fetch('https://services.leadconnectorhq.com/contacts/', {
       method: 'POST',
@@ -24,12 +39,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
         'Version': '2021-07-28'
       },
-      body: JSON.stringify({
-        email,
-        locationId,
-        tags: ['ignite-legacy-quiz'],
-        source: 'Ignite Legacy Quiz'
-      })
+      body: JSON.stringify(payload)
     });
 
     if (!response.ok) {

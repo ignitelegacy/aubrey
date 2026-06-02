@@ -54,6 +54,25 @@ export default async function handler(req, res) {
       .reverse()
       .map(e => ({ email: e.email, ts: new Date(e.created_at).getTime() }));
 
+    const recentSubmissions = all
+      .filter(e => e.event === 'email_submit' && e.email)
+      .slice(-50)
+      .reverse()
+      .map(e => {
+        let parsed = null;
+        try {
+          parsed = typeof e.answer === 'string' ? JSON.parse(e.answer) : e.answer;
+        } catch (err) {
+          parsed = null;
+        }
+        return {
+          email: e.email,
+          name: parsed?.name || '',
+          answers: Array.isArray(parsed?.answers) ? parsed.answers : [],
+          ts: new Date(e.created_at).getTime()
+        };
+      });
+
     return res.status(200).json({
       funnel: { starts, emails, completions, cta_clicks },
       rates: { emailRate, completionRate, ctaRate },
@@ -61,6 +80,7 @@ export default async function handler(req, res) {
       cta_by_archetype,
       questionAnswers,
       recentEmails,
+      recentSubmissions,
     });
   } catch (err) {
     console.error('admin error:', err);

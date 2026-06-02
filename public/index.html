@@ -1122,23 +1122,46 @@ function track(event, data) {
   }).catch(() => {});
 }
 
+function getAnswerRecords() {
+  return steps.map((s, i) => {
+    if (s.type !== 'q' || answers[i] === null) return null;
+    const selected = s.opts[answers[i]] || {};
+    return {
+      step: i,
+      question: s.text,
+      answer: selected.l || selected.s || String(answers[i]),
+      archetype: selected.a || null
+    };
+  }).filter(Boolean);
+}
+
 /* patch sel() to track question answers + quiz start */
 let quizStarted = false;
 const _sel = sel;
 sel = function(i) {
   if (!quizStarted) { quizStarted = true; track('quiz_start', {}); }
-  track('question_answer', { step: cur, answer: i, archetype_vote: steps[cur]?.opts?.[i]?.a });
+  track('question_answer', {
+    step: cur,
+    answer: i,
+    archetype_vote: steps[cur]?.opts?.[i]?.a,
+    answer_label: steps[cur]?.opts?.[i]?.l || steps[cur]?.opts?.[i]?.s || String(i)
+  });
   _sel(i);
 };
 
 /* submit email and move to results */
 function submitEmail() {
   if (!isEmailValid() || nameVal.trim().length < 2) return;
-  track('email_submit', { email: emailVal, name: nameVal });
+  const answerRecords = getAnswerRecords();
+  track('email_submit', {
+    email: emailVal,
+    name: nameVal,
+    answer: JSON.stringify({ name: nameVal, answers: answerRecords })
+  });
   fetch('/api/ghl', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: emailVal, name: nameVal })
+    body: JSON.stringify({ email: emailVal, name: nameVal, answers: answerRecords })
   }).catch(() => {});
   showResult();
 }
