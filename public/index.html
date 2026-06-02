@@ -1155,8 +1155,7 @@ function submitEmail() {
   track('email_submit', {
     email: emailVal,
     name: nameVal,
-    answer: JSON.stringify({ name: nameVal, answers: answerRecords }),
-    answers_payload: JSON.stringify(answerRecords)
+    answer: JSON.stringify({ name: nameVal, answers: answerRecords })
   });
   fetch('/api/ghl', {
     method: 'POST',

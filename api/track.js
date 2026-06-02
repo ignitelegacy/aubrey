@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).end();
 
-  const { event, step, answer, answers_payload, archetype_vote, archetype, email, ts } = req.body;
+  const { event, step, answer, archetype_vote, archetype, email, ts } = req.body;
 
   try {
     const response = await fetch(`${SUPABASE_URL}/rest/v1/quiz_events`, {
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
         'Prefer': 'return=minimal'
       },
-      body: JSON.stringify({ event, step, answer, answers_payload, archetype_vote, archetype, email, ts })
+      body: JSON.stringify({ event, step, answer, archetype_vote, archetype, email, ts })
     });
 
     if (!response.ok) {
