@@ -522,6 +522,7 @@ body {
 
   <div class="nav-row">
     <button class="btn-back" id="bbk" onclick="prevQ()">back</button>
+    <button class="btn-next" id="bnx" onclick="nextQ()" style="display:none">Keep going</button>
   </div>
 
 </div>
@@ -722,6 +723,7 @@ function render() {
         </div>
       </div>`;
     // auto-advance on answer click; no global Continue button
+    document.getElementById('bnx').style.display = 'none';
 
   } else if (s.type === 'nurture') {
     document.getElementById('pl').textContent = 'Almost there';
@@ -732,8 +734,10 @@ function render() {
         <div class="nurture-divider"></div>
         <p class="nurture-heading">${s.heading}</p>
         <p class="nurture-body">${s.body}</p>
-        <div class="slide-ctatext" style="margin-top:12px;font-family:'TTChocolates',sans-serif;color:#9a8880;">Keep going</div>
       </div>`;
+    document.getElementById('bnx').style.display = 'inline-block';
+    document.getElementById('bnx').disabled = false;
+    document.getElementById('bnx').textContent = 'Keep going';
 
   } else if (s.type === 'email') {
     document.getElementById('pl').textContent = 'One more step';
@@ -747,6 +751,7 @@ function render() {
         <p class="email-note">no spam. just your result + first steps.</p>
         <div style="text-align:center;margin-top:14px;"><button class="rp-btn" id="emailSubmit" disabled onclick="submitEmail()">Get My Result →</button></div>
       </div>`;
+    document.getElementById('bnx').style.display = 'none';
   }
 
   document.getElementById('bbk').style.visibility = cur === 0 ? 'hidden' : 'visible';
