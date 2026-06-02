@@ -1,4 +1,5 @@
-import { kv } from '@vercel/kv';
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -10,33 +11,21 @@ export default async function handler(req, res) {
   const { event, step, answer, archetype_vote, archetype, email, ts } = req.body;
 
   try {
-    if (event === 'quiz_start') {
-      await kv.incr('stats:starts');
-      await kv.incr(`stats:starts:${dateKey()}`);
-    }
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/quiz_events`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ event, step, answer, archetype_vote, archetype, email, ts })
+    });
 
-    if (event === 'question_answer') {
-      await kv.incr(`stats:question:${step}:answers`);
-      if (archetype_vote) await kv.incr(`stats:archetype_vote:${archetype_vote}`);
-    }
-
-    if (event === 'email_submit') {
-      await kv.incr('stats:emails');
-      await kv.incr(`stats:emails:${dateKey()}`);
-      /* store email with timestamp */
-      if (email) {
-        await kv.lpush('emails', JSON.stringify({ email, ts: ts || Date.now() }));
-      }
-    }
-
-    if (event === 'result_view') {
-      await kv.incr('stats:completions');
-      if (archetype) await kv.incr(`stats:archetype:${archetype}`);
-    }
-
-    if (event === 'cta_click') {
-      await kv.incr('stats:cta_clicks');
-      if (archetype) await kv.incr(`stats:cta:${archetype}`);
+    if (!response.ok) {
+      const text = await response.text();
+      console.error('Supabase insert error:', text);
+      return res.status(500).json({ error: 'failed to track event' });
     }
 
     return res.status(200).json({ ok: true });
@@ -44,8 +33,4 @@ export default async function handler(req, res) {
     console.error('track error:', err);
     return res.status(500).json({ error: 'tracking failed' });
   }
-}
-
-function dateKey() {
-  return new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 }
