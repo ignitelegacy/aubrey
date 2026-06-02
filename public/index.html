@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your Creator Archetype Ignite Legacy</title>
+<title>Your Creator Archetype</title>
 <style>
 @font-face {
   font-family: 'EditorsNote';
@@ -469,13 +469,13 @@ body {
 .income-number { font-family: 'EditorsNote', serif; font-size: 60px; color: #ad9565; line-height: 1; margin-bottom: 6px; }
 .income-label { font-family: 'UglyDave', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #9a8880; }
 
-/* Pink section wrapper */
+/* Light gold section wrapper */
 .pink-wrap {
-  background: linear-gradient(180deg, #fce8ee 0%, #f5d0da 60%, #fce8ee 100%);
+  background: linear-gradient(180deg, #fbf4e3 0%, #f5e2b7 55%, #fbf4e3 100%);
   border-radius: 20px; padding: 2rem; margin: 1.75rem 0;
 }
-.pink-wrap .rp-section-title { color: #B3688A; font-size: clamp(22px, 3vw, 30px); }
-.pink-wrap .rp-body { color: #7a6a5f; }
+.pink-wrap .rp-section-title { color: #9a7a4d; font-size: clamp(22px, 3vw, 30px); }
+.pink-wrap .rp-body { color: #6a5a43; }
 
 /* Pricing card */
 .pricing-card {
@@ -513,7 +513,6 @@ body {
 <div class="quiz-wrap" id="quiz-wrap">
 
   <div class="quiz-header">
-    <span class="eyebrow">ignite legacy · 2 min quiz</span>
     <h1 class="quiz-title">What's Your Creator Archetype?</h1>
     <p class="quiz-sub">Find out exactly how you're wired to build a personal brand and what to do first</p>
   </div>
@@ -713,7 +712,7 @@ function render() {
     document.getElementById('pl').textContent = 'Question ' + qi + ' of ' + qCount();
     card.innerHTML = `
       <div class="card">
-        <p class="q-num">Question ${qi}${s.ab ? ' <span class="ab-badge">hook question</span>' : ''}</p>
+        <p class="q-num">Question ${qi}</p>
         <p class="q-text">${s.text}</p>
         <div class="opts">
           ${s.opts.map((o, i) => `
@@ -1078,7 +1077,7 @@ function buildResultPage(r, counts, total, top, names, colors) {
       <span class="rp-section-eyebrow">one decision. lifetime access.</span>
       <p class="rp-section-title">This exact path is how content creators started earning more without a giant following</p>
       <img class="mockup-img" src="https://assets.cdn.filesafe.space/wcJWrJ0LKUsg51VQbi8P/media/69d9c6f8b30bc52371d2af66.png" alt="Ignite Legacy mockup" />
-      <p class="rp-body">This exact framework that will be revealed is how Maddi went from posting casually to landing her first premium offer, building a business that fits her life, and earning more without chasing a bigger following.</p>
+      <p class="rp-body">This exact framework that will be revealed is how creators went from posting casually to earning their first premium offers, building a business that fits their life, and making more without chasing a bigger following.</p>
       <p class="rp-body">The women doing this right now didn't start with a big following. They started with the right community, a clear path, and one decision to back themselves.</p>
       <p class="rp-body">Most of them had tried things that didn't work. The difference wasn't talent or timing. It was finding the right vehicle and actually going all in on it.</p>
       <a href="https://ignitelegacy.co/checkout?ref=aubreyvlynn" class="rp-btn" style="margin-top:1.5rem;">I'm ready to join Ignite Legacy</a>
