@@ -341,12 +341,13 @@ body {
   gap: 14px;
   margin-top: 1rem;
 }
-.video-card video {
-  width: 100%;
-  border-radius: 18px;
-  border: 1px solid rgba(179,104,138,0.12);
-  background: #000;
+.video-card { display: block; }
+.iphone {
+  background: #0b0b0b; padding: 14px; border-radius: 44px; display:block;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.2); border: 8px solid #0b0b0b; max-width:100%;
 }
+.iphone-screen { background: #000; border-radius: 28px; overflow: hidden; }
+.iphone-screen video { display:block; width:100%; height:100%; }
 @media (max-width: 830px) {
   .video-grid { grid-template-columns: 1fr 1fr; }
 }
@@ -521,7 +522,6 @@ body {
 
   <div class="nav-row">
     <button class="btn-back" id="bbk" onclick="prevQ()">back</button>
-    <button class="btn-next" id="bnx" onclick="nextQ()" disabled>Continue</button>
   </div>
 
 </div>
@@ -721,8 +721,7 @@ function render() {
           `).join('')}
         </div>
       </div>`;
-    document.getElementById('bnx').disabled = answers[cur] === null;
-    document.getElementById('bnx').textContent = cur === steps.length - 1 ? 'See My Result' : 'Continue';
+    // auto-advance on answer click; no global Continue button
 
   } else if (s.type === 'nurture') {
     document.getElementById('pl').textContent = 'Almost there';
@@ -733,9 +732,8 @@ function render() {
         <div class="nurture-divider"></div>
         <p class="nurture-heading">${s.heading}</p>
         <p class="nurture-body">${s.body}</p>
+        <div class="slide-ctatext" style="margin-top:12px;font-family:'TTChocolates',sans-serif;color:#9a8880;">Keep going</div>
       </div>`;
-    document.getElementById('bnx').disabled = false;
-    document.getElementById('bnx').textContent = 'Keep Going';
 
   } else if (s.type === 'email') {
     document.getElementById('pl').textContent = 'One more step';
@@ -747,9 +745,8 @@ function render() {
         <input class="email-input" type="text" placeholder="your first name" id="nameinput" value="${nameVal}" oninput="onName(this.value)" />
         <input class="email-input" type="email" placeholder="your@email.com" id="emailinput" value="${emailVal}" oninput="onEmail(this.value)" />
         <p class="email-note">no spam. just your result + first steps.</p>
+        <div style="text-align:center;margin-top:14px;"><button class="rp-btn" id="emailSubmit" disabled onclick="submitEmail()">Get My Result →</button></div>
       </div>`;
-    document.getElementById('bnx').disabled = !isEmailValid() || nameVal.trim().length < 2;
-    document.getElementById('bnx').textContent = 'Get My Result →';
   }
 
   document.getElementById('bbk').style.visibility = cur === 0 ? 'hidden' : 'visible';
@@ -768,12 +765,14 @@ function sel(i) {
 
 function onEmail(v) {
   emailVal = v;
-  document.getElementById('bnx').disabled = !isEmailValid() || nameVal.trim().length < 2;
+  const btn = document.getElementById('emailSubmit');
+  if (btn) btn.disabled = !isEmailValid() || nameVal.trim().length < 2;
 }
 
 function onName(v) {
   nameVal = v;
-  document.getElementById('bnx').disabled = !isEmailValid() || nameVal.trim().length < 2;
+  const btn = document.getElementById('emailSubmit');
+  if (btn) btn.disabled = !isEmailValid() || nameVal.trim().length < 2;
 }
 
 function isEmailValid() {
@@ -822,12 +821,11 @@ const ARCHETYPES = {
     darkTitle: 'What Ignite Legacy actually gives a Visionary',
     darkBody: 'You don\'t need more inspiration. You need a community that holds you accountable, a clear offer that matches your energy, and a system that converts your audience into actual income. That\'s exactly what Ignite Legacy is built to do.',
     checkItems: [
-      '8 complete courses Legacy Pathway, Mindset, Systems, Content, Cashflow, Sales',
-      'Monthly group calls with Lauren + direct feedback on your content',
-      'Lifetime community access with women who are actually doing this',
-      'Brand deal pitch templates, rate cards, contracts and invoices',
-      'Influence AI Lauren\'s custom-trained AI coach available any time',
-      'Content calendars, hook vault, Reels frameworks, story scripts'
+      'Lifetime access to 8 complete courses and community',
+      '1:1 Clarity Call',
+      'Lifetime Community Access',
+      'Monthly Group Calls',
+      'Direct feedback and support from Aubrey'
     ]
   },
 
@@ -859,12 +857,11 @@ const ARCHETYPES = {
     darkTitle: 'What Ignite Legacy actually gives a Builder',
     darkBody: 'You don\'t need to be told to work harder. You need a clear roadmap, a community that holds you accountable to starting, and proof that the system actually works. Ignite Legacy is structured exactly the way you think.',
     checkItems: [
-      'Step-by-step curriculum from brand foundation to full cashflow system',
-      'Content calendars, systems, and planning frameworks already built for you',
-      'Monthly calls + direct strategy support so you\'re never guessing next steps',
-      'Landing page and email templates the tech stuff, done',
-      'A community of women who are ahead of you and pulling you forward',
-      'Lifetime access return at every new stage of your business'
+      'Lifetime access to 8 complete courses and community',
+      '1:1 Clarity Call',
+      'Lifetime Community Access',
+      'Monthly Group Calls',
+      'Direct feedback and support from Aubrey'
     ]
   },
 
@@ -896,12 +893,11 @@ const ARCHETYPES = {
     darkTitle: 'What Ignite Legacy actually gives a Connector',
     darkBody: 'You don\'t need a bigger audience. You need to learn how to monetise the one you already have. Ignite Legacy teaches you how to sell in a way that feels completely natural through storytelling, content, and the trust you\'ve already built.',
     checkItems: [
-      'Storytelling and sales psychology courses that make selling feel like connection',
-      'Brand deal frameworks, negotiation templates, rate cards and contracts',
-      'Content to Cashflow turn your audience\'s trust into actual income',
-      'Private community of women who get it and cheer each other on loudly',
-      'Monthly group calls so you\'re never building alone',
-      'Caption structures, hooks, and Reels frameworks that convert'
+      'Lifetime access to 8 complete courses and community',
+      '1:1 Clarity Call',
+      'Lifetime Community Access',
+      'Monthly Group Calls',
+      'Direct feedback and support from Aubrey'
     ]
   },
 
@@ -933,12 +929,11 @@ const ARCHETYPES = {
     darkTitle: 'What Ignite Legacy actually gives an Activator',
     darkBody: 'You don\'t need another course to add to your list. You need one complete system, a community that holds you accountable, and a first real win that makes it impossible to stop. Ignite Legacy is designed to get you moving and keep you moving.',
     checkItems: [
-      'Get started in high ticket learn the model and take action from day one',
-      'Instagram Bootcamp + Content to Cashflow so you\'re earning fast',
-      'Influence AI for on-demand strategy when you feel stuck mid-sprint',
-      'Community accountability so you don\'t let yourself quit this time',
-      'Everything you need in one place no hopping between platforms',
-      '$99 one-time, lifetime access so the momentum never has to stop'
+      'Lifetime access to 8 complete courses and community',
+      '1:1 Clarity Call',
+      'Lifetime Community Access',
+      'Monthly Group Calls',
+      'Direct feedback and support from Aubrey'
     ]
   }
 };
@@ -1067,9 +1062,9 @@ function buildResultPage(r, counts, total, top, names, colors) {
       <span class="rp-section-eyebrow">stories in motion</span>
       <p class="rp-section-title">See what members are building inside Ignite Legacy</p>
       <div class="video-grid">
-        <div class="video-card"><video controls playsinline preload="metadata" src="https://assets.cdn.filesafe.space/wcJWrJ0LKUsg51VQbi8P/media/6a1c3cd1ff82912d65bbeb58.mp4"></video></div>
-        <div class="video-card"><video controls playsinline preload="metadata" src="https://assets.cdn.filesafe.space/wcJWrJ0LKUsg51VQbi8P/media/6a1c3b42045e32379f23a011.mp4"></video></div>
-        <div class="video-card"><video controls playsinline preload="metadata" src="https://assets.cdn.filesafe.space/wcJWrJ0LKUsg51VQbi8P/media/6a1c3b3c5a3e6e89b60a2f3f.mov"></video></div>
+        <div class="video-card"><div class="iphone"><div class="iphone-screen"><video controls playsinline preload="metadata" src="https://assets.cdn.filesafe.space/wcJWrJ0LKUsg51VQbi8P/media/6a1c3cd1ff82912d65bbeb58.mp4"></video></div></div></div>
+        <div class="video-card"><div class="iphone"><div class="iphone-screen"><video controls playsinline preload="metadata" src="https://assets.cdn.filesafe.space/wcJWrJ0LKUsg51VQbi8P/media/6a1c3b42045e32379f23a011.mp4"></video></div></div></div>
+        <div class="video-card"><div class="iphone"><div class="iphone-screen"><video controls playsinline preload="metadata" src="https://assets.cdn.filesafe.space/wcJWrJ0LKUsg51VQbi8P/media/6a1c3b3c5a3e6e89b60a2f3f.mov"></video></div></div></div>
       </div>
     </div>
 
@@ -1133,19 +1128,17 @@ sel = function(i) {
   _sel(i);
 };
 
-/* patch nextQ() to fire email submit + GHL on email step */
-const _nextQ = nextQ;
-nextQ = function() {
-  if (steps[cur] && steps[cur].type === 'email' && isEmailValid() && nameVal.trim().length >= 2) {
-    track('email_submit', { email: emailVal, name: nameVal });
-    fetch('/api/ghl', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: emailVal, name: nameVal })
-    }).catch(() => {});
-  }
-  _nextQ();
-};
+/* submit email and move to results */
+function submitEmail() {
+  if (!isEmailValid() || nameVal.trim().length < 2) return;
+  track('email_submit', { email: emailVal, name: nameVal });
+  fetch('/api/ghl', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: emailVal, name: nameVal })
+  }).catch(() => {});
+  showResult();
+}
 
 /* patch showResult() to fire result_view with archetype */
 let currentArchetype = null;
