@@ -319,12 +319,40 @@ body {
 /* CTA */
 .rp-cta { margin-bottom: 2.5rem; display: flex; flex-direction: column; align-items: center; gap: 10px; }
 .rp-btn {
-  display: inline-block; font-family: 'UglyDave', sans-serif; font-size: 13px;
-  letter-spacing: 3px; text-transform: uppercase; background: #ad9565; color: #fff;
+  display: inline-block; font-family: 'TTChocolates', sans-serif; font-size: 14px;
+  letter-spacing: 0.5px; text-transform: none; background: #ad9565; color: #fff;
   padding: 17px 48px; border-radius: 50px; text-decoration: none;
   transition: background 0.3s, transform 0.2s; border: none; cursor: pointer;
 }
 .rp-btn:hover { background: #9a8457; transform: translateY(-2px); }
+.mockup-img {
+  width: 100%; max-width: 560px;
+  border-radius: 24px;
+  margin: 1.75rem auto;
+  display: block;
+  border: 1px solid rgba(179,104,138,0.18);
+}
+.video-section {
+  margin: 2rem 0 0;
+}
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 1rem;
+}
+.video-card video {
+  width: 100%;
+  border-radius: 18px;
+  border: 1px solid rgba(179,104,138,0.12);
+  background: #000;
+}
+@media (max-width: 830px) {
+  .video-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 620px) {
+  .video-grid { grid-template-columns: 1fr; }
+}
 .rp-sub-note {
   font-family: 'UglyDave', sans-serif; font-size: 10px; letter-spacing: 2px;
   text-transform: uppercase; color: #c4b8b0;
@@ -659,6 +687,7 @@ const steps = [
 let cur = 0;
 let answers = new Array(steps.length).fill(null);
 let emailVal = '';
+let nameVal = '';
 
 function qCount() { return steps.filter(s => s.type === 'q').length; }
 function qIndex(i) {
@@ -715,21 +744,40 @@ function render() {
         <p class="q-num">Almost done</p>
         <p class="q-text">${s.text}</p>
         <p style="font-size:13px;color:#c4b8b0;font-family:'TTChocolates',sans-serif;">${s.subtext}</p>
+        <input class="email-input" type="text" placeholder="your first name" id="nameinput" value="${nameVal}" oninput="onName(this.value)" />
         <input class="email-input" type="email" placeholder="your@email.com" id="emailinput" value="${emailVal}" oninput="onEmail(this.value)" />
         <p class="email-note">no spam. just your result + first steps.</p>
       </div>`;
-    document.getElementById('bnx').disabled = emailVal.length < 5;
+    document.getElementById('bnx').disabled = !isEmailValid() || nameVal.trim().length < 2;
     document.getElementById('bnx').textContent = 'Get My Result →';
   }
 
   document.getElementById('bbk').style.visibility = cur === 0 ? 'hidden' : 'visible';
 }
 
-function sel(i) { answers[cur] = i; render(); }
+function sel(i) {
+  if (steps[cur].type !== 'q') return;
+  answers[cur] = i;
+  if (cur === steps.length - 1) {
+    showResult();
+    return;
+  }
+  cur++;
+  render();
+}
 
 function onEmail(v) {
   emailVal = v;
-  document.getElementById('bnx').disabled = v.length < 5;
+  document.getElementById('bnx').disabled = !isEmailValid() || nameVal.trim().length < 2;
+}
+
+function onName(v) {
+  nameVal = v;
+  document.getElementById('bnx').disabled = !isEmailValid() || nameVal.trim().length < 2;
+}
+
+function isEmailValid() {
+  return emailVal.includes('@') && emailVal.length >= 5;
 }
 
 function nextQ() {
@@ -967,7 +1015,7 @@ function buildResultPage(r, counts, total, top, names, colors) {
       </div>
 
       <div class="rp-cta">
-        <a href="https://ignitelegacy.com" class="rp-btn">Show Me My Path Inside Ignite Legacy</a>
+        <a href="https://ignitelegacy.co/checkout?ref=aubreyvlynn" class="rp-btn">Show Me My Path Inside Ignite Legacy</a>
         <span class="rp-sub-note">Ignite Legacy · $99 one-time · lifetime access · instant start</span>
       </div>
     </div>
@@ -1015,19 +1063,13 @@ function buildResultPage(r, counts, total, top, names, colors) {
     <p class="rp-section-title">Women just like you, doing this right now</p>
     <div class="testimonials">${testis}</div>
 
-    <!-- More social proof -->
-    <div class="testimonials">
-      <div class="testi">
-        <div class="testi-text">"I'm in shock at how much you've given us inside Ignite Legacy. I never expected anything like it. I wrote half my notebook with only one module."</div>
-        <div class="testi-author">- <span>@vicki.bir</span> · inside Ignite Legacy</div>
-      </div>
-      <div class="testi">
-        <div class="testi-text">"I processed $13k in sales while I was in Hawaii swimming, exploring, and soaking up the sun. This business is showing me what's actually possible when you go all in."</div>
-        <div class="testi-author">- <span>Mia Gilbert</span> · inside Ignite Legacy</div>
-      </div>
-      <div class="testi">
-        <div class="testi-text">"Tony and I just did the math last week we had $47,500 in committed and closed sales. We just hit our first $10k commissions week."</div>
-        <div class="testi-author">- <span>Maggie Tilley</span> · inside Ignite Legacy</div>
+    <div class="video-section">
+      <span class="rp-section-eyebrow">stories in motion</span>
+      <p class="rp-section-title">See what members are building inside Ignite Legacy</p>
+      <div class="video-grid">
+        <div class="video-card"><video controls playsinline preload="metadata" src="https://assets.cdn.filesafe.space/wcJWrJ0LKUsg51VQbi8P/media/6a1c3cd1ff82912d65bbeb58.mp4"></video></div>
+        <div class="video-card"><video controls playsinline preload="metadata" src="https://assets.cdn.filesafe.space/wcJWrJ0LKUsg51VQbi8P/media/6a1c3b42045e32379f23a011.mp4"></video></div>
+        <div class="video-card"><video controls playsinline preload="metadata" src="https://assets.cdn.filesafe.space/wcJWrJ0LKUsg51VQbi8P/media/6a1c3b3c5a3e6e89b60a2f3f.mov"></video></div>
       </div>
     </div>
 
@@ -1035,18 +1077,20 @@ function buildResultPage(r, counts, total, top, names, colors) {
 
     <!-- Pink CTA section -->
     <div class="pink-wrap">
-      <span class="rp-section-eyebrow">built for ${r.name}s</span>
-      <p class="rp-section-title">What Ignite Legacy gives you</p>
-      <p class="rp-body">Ignite Legacy is a <strong>$99 one-time investment</strong> that gives you lifetime access to 8 step-by-step courses, a private creator community, monthly group calls with Lauren, brand deal templates, the Influence AI, and direct feedback on your content and strategy.</p>
-      <p class="rp-body">This is not just a course. It is a complete ecosystem for women building personal brands that actually pay them.</p>
+      <span class="rp-section-eyebrow">one decision. lifetime access.</span>
+      <p class="rp-section-title">This exact path is how Maddi started earning more without a giant following</p>
+      <img class="mockup-img" src="https://assets.cdn.filesafe.space/wcJWrJ0LKUsg51VQbi8P/media/69d9c6f8b30bc52371d2af66.png" alt="Ignite Legacy mockup" />
+      <p class="rp-body">This exact framework that will be revealed is how Maddi went from posting casually to landing her first premium offer, building a business that fits her life, and earning more without chasing a bigger following.</p>
+      <p class="rp-body">The women doing this right now didn't start with a big following. They started with the right community, a clear path, and one decision to back themselves.</p>
+      <p class="rp-body">Most of them had tried things that didn't work. The difference wasn't talent or timing. It was finding the right vehicle and actually going all in on it.</p>
+      <a href="https://ignitelegacy.co/checkout?ref=aubreyvlynn" class="rp-btn" style="margin-top:1.5rem;">I'm ready to join Ignite Legacy</a>
 
       <div class="what-you-get">
         <div class="get-item"><span class="get-num">1</span><div class="get-content"><h4>8 complete courses</h4><p>From the Legacy Pathway and Mindset Upgrade through Systems, Content, Cashflow, Instagram Bootcamp, Storytelling, and Sales Psychology.</p></div></div>
-        <div class="get-item"><span class="get-num">2</span><div class="get-content"><h4>Direct access to Lauren</h4><p>Monthly group calls, content feedback, and strategy support. You're never figuring your next move out alone.</p></div></div>
+        <div class="get-item"><span class="get-num">2</span><div class="get-content"><h4>Direct access to Aubrey</h4><p>Monthly group calls, content feedback, and strategy support. You're never figuring your next move out alone.</p></div></div>
         <div class="get-item"><span class="get-num">3</span><div class="get-content"><h4>Lifetime private community</h4><p>A space of women actually building this celebrating wins, asking questions, and keeping each other moving.</p></div></div>
         <div class="get-item"><span class="get-num">4</span><div class="get-content"><h4>Every template you'll ever need</h4><p>Brand deal pitches, rate cards, contracts, caption frameworks, hook vault, content calendars, Reels structures.</p></div></div>
-        <div class="get-item"><span class="get-num">5</span><div class="get-content"><h4>Influence AI</h4><p>Lauren's custom-trained AI coach. Strategy, content direction, and clarity on demand any time you feel stuck.</p></div></div>
-        <div class="get-item"><span class="get-num">6</span><div class="get-content"><h4>Get started in high ticket</h4><p>Learn the model, understand the offer, and take your first real steps into premium sales with confidence.</p></div></div>
+        <div class="get-item"><span class="get-num">5</span><div class="get-content"><h4>Get started in high ticket</h4><p>Learn the model, understand the offer, and take your first real steps into premium sales with confidence.</p></div></div>
       </div>
     </div>
 
@@ -1057,18 +1101,13 @@ function buildResultPage(r, counts, total, top, names, colors) {
       <div class="pricing-price">$99</div>
       <p class="pricing-note">one-time · lifetime access · no subscription</p>
       <div class="check-list">${checkItems}</div>
-      <a href="https://ignitelegacy.com" class="rp-btn" style="display:block;width:100%;margin-top:1.5rem;">Yes I'm Ready. Let's Go.</a>
-      <p style="font-family:'UglyDave',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c4b8b0;margin-top:12px;">$99 one-time · instant access · no subscription</p>
-    </div>
-
-    <!-- Final testimonial -->
-    <div class="mirror-block" style="margin-top:2rem;">
-      <p>"Since Ignite Legacy, I don't have a single invoice sent out under four figures and I'm looking to hire someone to help with the demand."<br><span style="font-family:'UglyDave',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#c4758a;display:block;margin-top:12px;">- Mei · inside Ignite Legacy</span></p>
+      <a href="https://ignitelegacy.co/checkout?ref=aubreyvlynn" class="rp-btn" style="display:block;width:100%;margin-top:1.5rem;">Yes I'm Ready. Let's Go.</a>
+      <p style="font-family:'TTChocolates',sans-serif;font-size:12px;color:#c4b8b0;margin-top:12px;">$99 one-time · instant access · no subscription</p>
     </div>
 
     <div style="text-align:center;margin:2.5rem 0 1rem;">
-      <a href="https://ignitelegacy.com" class="rp-btn">I'm In. Show Me My Path.</a>
-      <p style="font-family:'UglyDave',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c4b8b0;margin-top:10px;">Ignite Legacy · $99 · lifetime access</p>
+      <a href="https://ignitelegacy.co/checkout?ref=aubreyvlynn" class="rp-btn">I'm In. Show Me My Path.</a>
+      <p style="font-family:'TTChocolates',sans-serif;font-size:12px;color:#c4b8b0;margin-top:10px;">Ignite Legacy · $99 · lifetime access</p>
     </div>
 
   </div>`;
@@ -1097,12 +1136,12 @@ sel = function(i) {
 /* patch nextQ() to fire email submit + GHL on email step */
 const _nextQ = nextQ;
 nextQ = function() {
-  if (steps[cur] && steps[cur].type === 'email' && emailVal.length >= 5) {
-    track('email_submit', { email: emailVal });
+  if (steps[cur] && steps[cur].type === 'email' && isEmailValid() && nameVal.trim().length >= 2) {
+    track('email_submit', { email: emailVal, name: nameVal });
     fetch('/api/ghl', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: emailVal })
+      body: JSON.stringify({ email: emailVal, name: nameVal })
     }).catch(() => {});
   }
   _nextQ();
