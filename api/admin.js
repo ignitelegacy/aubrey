@@ -19,7 +19,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const all = await select('quiz_events', '?select=event,step,archetype,email,answer,created_at&order=created_at.asc');
+    const all = await select('quiz_events', '?select=event,step,archetype,email,answer,answers_payload,created_at&order=created_at.asc');
 
     if (!Array.isArray(all)) {
       return res.status(500).json({ error: 'failed to fetch events' });
@@ -60,8 +60,15 @@ export default async function handler(req, res) {
       .reverse()
       .map(e => {
         let parsed = null;
+        // Prefer answers_payload if present (raw array), otherwise fall back to answer field (可能 stringified)
         try {
-          parsed = typeof e.answer === 'string' ? JSON.parse(e.answer) : e.answer;
+          if (e.answers_payload) {
+            parsed = typeof e.answers_payload === 'string' ? JSON.parse(e.answers_payload) : e.answers_payload;
+            // If answers_payload is an array, wrap into object for compatibility
+            if (Array.isArray(parsed)) parsed = { answers: parsed };
+          } else {
+            parsed = typeof e.answer === 'string' ? JSON.parse(e.answer) : e.answer;
+          }
         } catch (err) {
           parsed = null;
         }
