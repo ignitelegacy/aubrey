@@ -19,7 +19,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const all = await select('quiz_events', '?select=event,step,archetype,email,answer,created_at&order=created_at.asc');
+    const all = await select('quiz_events', '?select=event,step,archetype,email,name,answer,created_at&order=created_at.asc');
 
     if (!Array.isArray(all)) {
       return res.status(500).json({ error: 'failed to fetch events' });
@@ -59,16 +59,10 @@ export default async function handler(req, res) {
       .slice(-50)
       .reverse()
       .map(e => {
-        let parsed = null;
-        try {
-          parsed = typeof e.answer === 'string' ? JSON.parse(e.answer) : e.answer;
-        } catch (err) {
-          parsed = null;
-        }
         return {
           email: e.email,
-          name: parsed?.name || '',
-          answers: Array.isArray(parsed?.answers) ? parsed.answers : [],
+          name: e.name || '',
+          answers: [],
           ts: new Date(e.created_at).getTime()
         };
       });

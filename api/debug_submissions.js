@@ -19,9 +19,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    const rows = await select('quiz_events', '?select=event,email,answer,created_at&order=created_at.desc&limit=50');
+    const rows = await select('quiz_events', '?select=event,email,name,answer,created_at&order=created_at.desc&limit=50');
     if (!Array.isArray(rows)) return res.status(500).json({ error: 'failed to fetch' });
-    const subs = rows.filter(r => r.event === 'email_submit').map(r => ({ email: r.email, answer: r.answer, ts: r.created_at }));
+    const subs = rows.filter(r => r.event === 'email_submit').map(r => ({ email: r.email, name: r.name, answer: r.answer, ts: r.created_at }));
     return res.status(200).json({ recent: subs });
   } catch (err) {
     console.error('debug_submissions error:', err);

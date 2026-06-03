@@ -1154,8 +1154,7 @@ function submitEmail() {
   const answerRecords = getAnswerRecords();
   track('email_submit', {
     email: emailVal,
-    name: nameVal,
-    answer: JSON.stringify({ name: nameVal, answers: answerRecords })
+    name: nameVal
   });
   fetch('/api/ghl', {
     method: 'POST',
