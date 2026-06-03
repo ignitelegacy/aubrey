@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     if (!response.ok) {
       const text = await response.text();
       console.error('Supabase insert error:', text);
-      return res.status(500).json({ error: 'failed to track event' });
+      return res.status(500).json({ error: 'failed to track event', detail: text });
     }
 
     return res.status(200).json({ ok: true });
