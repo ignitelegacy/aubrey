@@ -1153,8 +1153,7 @@ function submitEmail() {
   if (!isEmailValid() || nameVal.trim().length < 2) return;
   const answerRecords = getAnswerRecords();
   track('email_submit', {
-    email: emailVal,
-    name: nameVal
+    email: emailVal
   });
   fetch('/api/ghl', {
     method: 'POST',
